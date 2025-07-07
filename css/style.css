@@ -2,7 +2,7 @@
 
 /* ===== BACKGROUND HALAMAN AWAL ===== */
 body.bg_awal {
-  background-image: url("img/bg_awal.png");
+  background-image: url("../img/bg_awal.png");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -11,7 +11,7 @@ body.bg_awal {
 
 /* ===== BACKGROUND HALAMAN MENU ===== */
 body.bg_menu {
-  background-image: url("img/bg_menu.png");
+  background-image: url("../img/bg_menu.png");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -80,6 +80,9 @@ h2 {
   #startBtn {
     font-size: 16px;
     padding: 10px 20px;
+    animation: popIn 0.8s ease-out;
+    transform-origin: center;
+    transition: transform 0.3s ease;
   }
 
   ul li a {
@@ -106,6 +109,17 @@ h2 {
 #startBtn:hover {
   transform: scale(1.1) !important;
   box-shadow: 0 8px 20px rgba(7, 133, 183, 0.457);
+  transform: scale(1.1) rotate(1deg);
+}
+@keyframes popIn {
+  from {
+    transform: scale(0);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
 }
 
 #startBtn:active {
@@ -144,6 +158,34 @@ h2 {
   font-weight: normal;
   margin-top: 4px;
   color: #f0f0f0;
+}
+.unit-button {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: slideInUp 0.5s ease forwards;
+}
+
+.unit-button:nth-child(1) {
+  animation-delay: 0.2s;
+}
+.unit-button:nth-child(2) {
+  animation-delay: 0.4s;
+}
+.unit-button:nth-child(3) {
+  animation-delay: 0.6s;
+}
+.unit-button:nth-child(4) {
+  animation-delay: 0.8s;
+}
+.unit-button:nth-child(5) {
+  animation-delay: 1s;
+}
+
+@keyframes slideInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* Responsive tweak */
@@ -204,7 +246,7 @@ h2 {
 /* === MODAL KONTEN DENGAN BACKGROUND GAMBAR === */
 .modal-content {
   position: relative;
-  background-image: url("img/icon/mapel.png");
+  background-image: url("../img/icon/mapel.png");
   /* background: linear-gradient(to right, #2b78e4, #6fc3df); */
   background-size: cover;
   background-position: center;
@@ -249,4 +291,18 @@ h2 {
 
 .close-btn:hover {
   color: #fff;
+}
+
+/* Efek masuk saat membuka halaman */
+.page-transition {
+  animation: zoomIn 0.6s ease-out forwards;
+  opacity: 0;
+  transform: scale(0.8);
+}
+
+@keyframes zoomIn {
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
