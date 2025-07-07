@@ -1,14 +1,4 @@
 /* ===== GAYA UMUM UNTUK BODY ===== */
-body {
-  margin: 0;
-  padding: 0;
-  font-family: "Segoe UI", sans-serif;
-  min-height: 90vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-}
 
 /* ===== BACKGROUND HALAMAN AWAL ===== */
 body.bg_awal {
@@ -38,7 +28,6 @@ body.bg_menu {
 }
 
 /* ===== JUDUL & TEKS ===== */
-.container h1,
 h2 {
   font-size: 1.5rem;
   font-weight: bold;
@@ -80,31 +69,6 @@ h2 {
   overflow: hidden;
   z-index: 10;
   transition: all 0.3s ease !important;
-}
-
-/* ===== MENU UTAMA ===== */
-ul {
-  list-style: none;
-  padding: 0;
-}
-
-ul li {
-  margin: 15px 0;
-}
-
-ul li a {
-  color: #fff;
-  font-size: 20px;
-  text-decoration: none;
-  padding: 10px 20px;
-  display: inline-block;
-  background-color: rgba(255, 255, 255, 0.2);
-  border-radius: 10px;
-  transition: background-color 0.3s;
-}
-
-ul li a:hover {
-  background-color: rgba(255, 255, 255, 0.4);
 }
 
 /* ===== RESPONSIF ===== */
@@ -149,4 +113,140 @@ ul li a:hover {
   box-shadow: 0 4px 10px rgba(7, 133, 183, 0.457);
   background: linear-gradient(90deg, #5de0e6, #004aad);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.unit-button {
+  display: block;
+  margin: 15px auto;
+  padding: 16px 20px;
+  border-radius: 16px;
+  color: #fff;
+  font-size: clamp(14px, 4vw, 18px); /* responsive font */
+  font-weight: bold;
+  text-align: center;
+  width: 90%;
+  max-width: 400px;
+  background: linear-gradient(to right, #2b78e4, #6fc3df);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  transition: transform 0.2s;
+  line-height: 1.4;
+  cursor: pointer;
+}
+
+.unit-button:hover {
+  transform: scale(1.02);
+}
+
+/* Style untuk subjudul */
+.unit-button .title {
+  display: block;
+  font-size: clamp(12px, 3vw, 16px);
+  font-weight: normal;
+  margin-top: 4px;
+  color: #f0f0f0;
+}
+
+/* Responsive tweak */
+@media (max-width: 480px) {
+  .unit-button {
+    padding: 14px 16px;
+  }
+}
+
+/* === NAVIGASI ATAS === */
+.top-nav {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  display: flex;
+  gap: 12px;
+  z-index: 10;
+}
+
+.icon-button {
+  background-color: #ffffffcc;
+  border: none;
+  padding: 8px;
+  border-radius: 50%;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.icon-button:hover {
+  background-color: #fff;
+}
+
+.icon-button img {
+  width: 24px;
+  height: 24px;
+}
+
+/* === MODAL BACKDROP === */
+.modal {
+  display: none;
+  color: #000;
+  position: fixed;
+  z-index: 99;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  /* background-color: rgba(0, 0, 0, 0.5); gelap transparan */
+}
+
+/* === MODAL KONTEN DENGAN BACKGROUND GAMBAR === */
+.modal-content {
+  position: relative;
+  background-image: url("img/icon/mapel.png");
+  /* background: linear-gradient(to right, #2b78e4, #6fc3df); */
+  background-size: cover;
+  background-position: center;
+  color: #000;
+  margin: 20% auto;
+  padding: 30px 20px;
+  border-radius: 16px;
+  width: 90%;
+  max-width: 400px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+  font-family: sans-serif;
+  text-align: center;
+  overflow: hidden;
+}
+
+/* === LAPISAN GELAP AGAR TEKS TERLIHAT === */
+.modal-content::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  /* background-color: rgba(0, 0, 0, 0.4); overlay hitam transparan */
+  border-radius: 16px;
+  z-index: 0;
+}
+
+/* === PASTIKAN SEMUA KONTEN DI ATAS OVERLAY === */
+.modal-content * {
+  position: relative;
+  z-index: 1;
+}
+
+/* === TOMBOL CLOSE === */
+.close-btn {
+  color: #f80202cc;
+  font-size: 24px;
+  font-weight: bold;
+  cursor: pointer;
+  width: 100%;
+  text-align: right;
+  z-index: 1;
+}
+
+.close-btn:hover {
+  color: #fff;
 }

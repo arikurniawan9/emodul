@@ -34,40 +34,73 @@
 
     <!-- Halaman Menu -->
     <div id="halamanMenu" class="container" style="display: none">
+      <!-- Navigasi atas -->
+      <div class="top-nav">
+        <button class="icon-button" id="homeBtn" title="Home">
+          <img src="img/icon/home.png" alt="Home" />
+        </button>
+        <button class="icon-button" id="settingsBtn" title="Settings">
+          <img src="img/icon/setting.png" alt="Settings" />
+        </button>
+      </div>
+
+      <!-- Modal Settings -->
+      <!-- Modal Popup Info -->
+      <div id="modalSettings" class="modal">
+        <div class="modal-content">
+          <span class="close-btn" id="closeModal">&times;</span>
+          <h1 style="color: #0212e9"><strong>Informasi Aplikasi</strong></h1>
+          <p><strong>Dibuat oleh:</strong> Tim Tefatie</p>
+          <p>
+            Untuk keperluan program magister atas nama
+            <strong>Fenty Erdiyanti</strong>
+          </p>
+          <p><strong>Versi:</strong> 1.0</p>
+          <p><strong>Hak Cipta:</strong> © 2025 e-Modul</p>
+        </div>
+      </div>
+
+      <!-- Judul Halaman -->
       <div class="nav-container">
         <div class="row justify-content-center">
-          <div class="col-12">
-            <a href="./introduction.html" class="introduction" id="introduction"
-              >-
-              <span class="introduction-1">Introduction</span>
-            </a>
+          <div
+            class="unit-button"
+            style="background: linear-gradient(to right, #2b78e4, #6fc3df)"
+          >
+            Introduction
           </div>
-          <div class="col-12">
-            <a href="./unit_1/unit1.html" class="unit_1" id="unit_1"
-              >Unit 1
-              <span>Talking about your class schedule</span>
-            </a>
+
+          <div
+            class="unit-button"
+            style="background: linear-gradient(to right, #8e7cc3, #b4a7d6)"
+          >
+            <strong>Unit 1</strong>
+            <span class="title">Talking about your class schedule</span>
           </div>
-          <div class="col-12">
-            <a href="./unit_2/unit2.html" class="unit_2" id="unit_2"
-              >Unit 2
-              <span>Talking about your favorite school subjects</span>
-            </a>
+
+          <div
+            class="unit-button"
+            style="background: linear-gradient(to right, #ea9999, #f6b26b)"
+          >
+            <strong>Unit 2</strong>
+            <span class="title"
+              >Talking about your favorite school subjects</span
+            >
           </div>
-          <div class="col-12">
-            <a href="./unit_3/unit3.html" class="unit_3" id="unit_3"
-              >Unit 3
-              <span>Making plans with friends during break</span>
-            </a>
+
+          <div
+            class="unit-button"
+            style="background: linear-gradient(to right, #76c7c0, #3d85c6)"
+          >
+            <strong>Unit 3</strong>
+            <span class="title">Making plans with friends during break</span>
           </div>
-          <div class="col-12">
-            <a
-              href="../halaman_navigasi/glosarium.html"
-              class="unit_4"
-              id="unit_4"
-              >-
-              <span class="unit_4_1">Glosarium</span>
-            </a>
+
+          <div
+            class="unit-button"
+            style="background: linear-gradient(to right, #b07db7, #f9cb9c)"
+          >
+            Glosarium
           </div>
         </div>
       </div>
@@ -76,17 +109,39 @@
     <!-- JavaScript untuk mengubah halaman -->
     <script src="bootstrap/js/bootstrap.bundle.min.js"></script>
     <script>
+      // Tombol Start
       document
         .getElementById("startBtn")
         .addEventListener("click", function () {
-          // Ubah background
           document.body.classList.remove("bg_awal");
           document.body.classList.add("bg_menu");
-
-          // Sembunyikan halaman awal, tampilkan menu
           document.getElementById("halamanAwal").style.display = "none";
           document.getElementById("halamanMenu").style.display = "block";
         });
+
+      // Tombol Home
+      document.getElementById("homeBtn").addEventListener("click", function () {
+        window.location.replace("index.html"); // Tidak bisa kembali
+      });
+
+      // Modal Settings
+      const settingsBtn = document.getElementById("settingsBtn");
+      const modal = document.getElementById("modalSettings");
+      const closeModal = document.getElementById("closeModal");
+
+      settingsBtn.addEventListener("click", () => {
+        modal.style.display = "block";
+      });
+
+      closeModal.addEventListener("click", () => {
+        modal.style.display = "none";
+      });
+
+      window.addEventListener("click", (e) => {
+        if (e.target === modal) {
+          modal.style.display = "none";
+        }
+      });
     </script>
   </body>
 </html>
