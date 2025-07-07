@@ -1,37 +1,44 @@
-/* RESET */
-* {
+/* ===== GAYA UMUM UNTUK BODY ===== */
+body {
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
-}
-
-html,
-body {
-  height: 100%;
   font-family: "Segoe UI", sans-serif;
-}
-
-/* Halaman Landing */
-.landing-page {
-  background: url("assets/img/bg_awal.png") no-repeat center center fixed;
-  background-size: cover;
-  width: 100%;
-  height: 100vh;
-  position: relative;
+  min-height: 90vh;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 20px;
   text-align: center;
 }
 
-.overlay {
-  background: rgba(255, 255, 255, 0); /* transparan */
-  padding: 20px;
-  border-radius: 10px;
+/* ===== BACKGROUND HALAMAN AWAL ===== */
+body.bg_awal {
+  background-image: url("img/bg_awal.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
 }
 
-/* Animasi membesar-mengecil */
+/* ===== BACKGROUND HALAMAN MENU ===== */
+body.bg_menu {
+  background-image: url("img/bg_menu.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+
+/* ===== KONTENER UMUM ===== */
+.container {
+  padding: 20px 20px;
+  border-radius: 16px;
+  max-width: auto;
+  width: 90%;
+  color: #fff;
+}
+
+/* ===== JUDUL & TEKS ===== */
+.container h1,
 h2 {
   font-size: 1.5rem;
   font-weight: bold;
@@ -56,46 +63,90 @@ h2 {
   }
 }
 
-/* Tombol */
-.start-button {
-  background-color: #64b5f6;
+/* ===== TOMBOL START ===== */
+#startBtn {
+  display: inline-block;
+  position: relative;
+  background: linear-gradient(90deg, #5de0e6, #004aad);
   color: white;
-  padding: 15px 30px;
-  font-size: 16px;
+  padding: 12px 50px;
+  font-size: 1.3rem;
+  font-weight: bold;
   border: none;
   border-radius: 10px;
+  text-decoration: none;
   cursor: pointer;
-  margin-bottom: 20px;
+  margin-top: 70px;
+  overflow: hidden;
+  z-index: 10;
+  transition: all 0.3s ease !important;
 }
 
-.start-button:hover {
-  background-color: #42a5f5;
+/* ===== MENU UTAMA ===== */
+ul {
+  list-style: none;
+  padding: 0;
 }
 
-/* Kredit */
-.credit {
-  color: red;
-  font-size: 14px;
+ul li {
+  margin: 15px 0;
 }
 
-/* Halaman Utama */
-#halaman-utama {
-  padding: 30px;
-  text-align: center;
+ul li a {
+  color: #fff;
+  font-size: 20px;
+  text-decoration: none;
+  padding: 10px 20px;
+  display: inline-block;
+  background-color: rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
+  transition: background-color 0.3s;
 }
 
-/* RESPONSIVE */
-@media (max-width: 768px) {
-  .judul {
-    font-size: 1.3em;
+ul li a:hover {
+  background-color: rgba(255, 255, 255, 0.4);
+}
+
+/* ===== RESPONSIF ===== */
+@media (max-width: 600px) {
+  .container {
+    padding: 30px 15px;
   }
 
-  .start-button {
-    padding: 12px 24px;
-    font-size: 15px;
+  #startBtn {
+    font-size: 16px;
+    padding: 10px 20px;
   }
 
-  .credit {
-    font-size: 12px;
+  ul li a {
+    font-size: 18px;
   }
+}
+/* ===== ANIMASI BUTTON ===== */
+#startBtn::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 200%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.3);
+  z-index: 0;
+  transition: left 0.4s ease;
+}
+
+#startBtn:hover::before {
+  left: 0;
+}
+
+#startBtn:hover {
+  transform: scale(1.1) !important;
+  box-shadow: 0 8px 20px rgba(7, 133, 183, 0.457);
+}
+
+#startBtn:active {
+  transform: scale(0.95);
+  box-shadow: 0 4px 10px rgba(7, 133, 183, 0.457);
+  background: linear-gradient(90deg, #5de0e6, #004aad);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
