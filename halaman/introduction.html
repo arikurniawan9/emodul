@@ -4,173 +4,36 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>e-Modul - Introduction</title>
-    <link rel="stylesheet" href="../css/style.css" />
-    <link rel="stylesheet" href="../bootstrap/css/bootstrap.css" />
-    <link rel="stylesheet" href="../css/navigasi.css" />
-    <style>
-      body {
-        margin: 0;
-        font-family: sans-serif;
-        background: url("../img/bg_menu.jpg") no-repeat center center fixed;
-        background-size: cover;
-        color: #fff;
-      }
-
-      .intro-container {
-        max-width: 800px;
-        margin: 40px auto;
-        background-color: rgba(0, 0, 0, 0.6);
-        padding: 20px;
-        border-radius: 16px;
-      }
-
-      h2,
-      h3 {
-        text-align: center;
-        color: #f2a65a;
-      }
-
-      p {
-        line-height: 1.6;
-        font-size: 1rem;
-        margin-bottom: 16px;
-      }
-
-      .tips p {
-        margin-left: 20px;
-      }
-
-      .footer {
-        text-align: center;
-        margin-top: 30px;
-        font-style: italic;
-      }
-
-      .nav-btn {
-        text-align: center;
-        margin-top: 30px;
-      }
-
-      .nav-btn button {
-        background: linear-gradient(to right, #ff9966, #ff5e62);
-        border: none;
-        padding: 10px 20px;
-        border-radius: 50px;
-        color: white;
-        font-weight: 600;
-        cursor: pointer;
-        margin: 10px 8px;
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-        transition: all 0.3s ease-in-out;
-      }
-
-      .nav-btn button:hover {
-        transform: translateY(-2px);
-        background: linear-gradient(to right, #ff5e62, #ff9966);
-      }
-
-      .hidden {
-        display: none;
-      }
-
-      #toggleSound {
-        position: fixed;
-        top: 15px;
-        right: 15px;
-        z-index: 1000;
-        background: rgba(0, 0, 0, 0.5);
-        color: white;
-        border: none;
-        padding: 8px 12px;
-        border-radius: 8px;
-        font-size: 18px;
-        cursor: pointer;
-      }
-
-      .character-box {
-        position: fixed;
-        bottom: 10px;
-        left: 10px;
-        display: flex;
-        align-items: flex-end;
-        z-index: 999;
-        animation: fadeIn 1s ease-in-out;
-      }
-
-      .character-img {
-        width: 80px;
-        height: auto;
-      }
-
-      @keyframes fadeIn {
-        from {
-          opacity: 0;
-          transform: translateY(20px);
-        }
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
-      }
-
-      /* Animasi Fade */
-      .fade-in {
-        animation: fadeIn 0.5s ease-in forwards;
-      }
-
-      .fade-out {
-        animation: fadeOut 0.5s ease-out forwards;
-      }
-
-      @keyframes fadeIn {
-        from {
-          opacity: 0;
-          transform: translateY(20px);
-        }
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
-      }
-
-      @keyframes fadeOut {
-        from {
-          opacity: 1;
-          transform: translateY(0);
-        }
-        to {
-          opacity: 0;
-          transform: translateY(20px);
-        }
-      }
-    </style>
+    <link rel="stylesheet" href="../css/introduction.css" />
   </head>
   <body>
-    <!-- Musik latar -->
+    <!-- Musik Latar -->
     <audio id="bgMusic" autoplay loop>
       <source src="../sounds/introduction.opus" type="audio/ogg" />
       Your browser does not support the audio element.
     </audio>
 
-    <!-- Tombol mute/unmute -->
-    <button id="toggleSound" title="Toggle Music">🔊</button>
+    <!-- Tombol Navigasi -->
+    <div class="nav-btn">
+      <!-- Tombol Home di pojok kanan atas -->
+      <a href="../index.html" class="home-button" title="Kembali ke Beranda">
+        <img src="../img/icon/home.png" alt="Home" />
+      </a>
 
+      <button id="toggleSound" title="Toggle Music">🔊</button>
+    </div>
+
+    <!-- Konten Introduction -->
     <div class="intro-container page-transition">
-      <!-- Bagian 1 -->
+      <!-- Section 1 -->
       <div id="section1">
         <h2>Introduction (Pengenalan)</h2>
-
         <p style="text-align: center">Hi class! 👋</p>
-
         <p style="text-align: center">
           Welcome to <strong>Let’s Chat and Chill</strong>,<br />
           your fun and easy guide to speaking English like a pro in everyday
           school life!
         </p>
-
         <p>
           In this module, you’ll learn lots of cool words and phrases that you
           can use to chat casually with your friends. We’ll focus on vocabulary
@@ -179,21 +42,13 @@
           improve your pronunciation so that others can understand you better
           and you can sound more confident when speaking English.
         </p>
-
         <div class="nav-btn">
           <button onclick="showSection(2)">⮕️ Next</button>
         </div>
       </div>
 
-      <!-- Bagian 2 -->
+      <!-- Section 2 -->
       <div id="section2" class="hidden">
-        <div class="nav-btn">
-          <button onclick="showSection(1)">⬅️ Back</button>
-          <button onclick="window.location.href='../index.html'">
-            🏠 Home
-          </button>
-        </div>
-
         <p>
           Why should you join this chill learning journey? When you can easily
           speak using informal expressions, you’ll enjoy chatting more, make new
@@ -201,9 +56,7 @@
           are no boring lessons here, just real talk, fun activities, and plenty
           of chances to practice.
         </p>
-
         <h3>Here’s how to get the most out of this module:</h3>
-
         <div class="tips">
           <p>
             #1st Listen carefully to the audio examples to catch the correct
@@ -221,15 +74,22 @@
             you’ve learned.
           </p>
         </div>
-
         <div class="footer">
-          So, are you ready to chill and chat your way to better English?<br />
-          Let’s dive in and remember practice makes perfect! 😎
+          So, are you ready to chill and chat your way to better English? Let’s
+          dive in and remember practice makes perfect! 😎
+        </div>
+        <div class="nav-btn">
+          <img
+            src="../img/icon/back.png"
+            alt="Back"
+            class="image-back"
+            onclick="showSection(1)"
+          />
         </div>
       </div>
     </div>
 
-    <!-- Gambar Karakter -->
+    <!-- Karakter -->
     <div class="character-box">
       <img
         src="../img/icon/Karakter1.png"
@@ -238,57 +98,49 @@
       />
     </div>
 
+    <!-- Script -->
     <script>
-      function showSection(n) {
-        document.getElementById("section1").classList.add("hidden");
-        document.getElementById("section2").classList.add("hidden");
-        document.getElementById("section" + n).classList.remove("hidden");
-      }
-
       const music = document.getElementById("bgMusic");
       const toggleBtn = document.getElementById("toggleSound");
 
       // Autoplay fallback
       window.addEventListener("load", () => {
-        music.play().catch(() => console.log("Autoplay blocked"));
+        music.play().catch(() => {});
       });
 
+      // Toggle Mute
       toggleBtn.addEventListener("click", () => {
         music.muted = !music.muted;
         toggleBtn.textContent = music.muted ? "🔇" : "🔊";
       });
 
+      // Izinkan audio setelah interaksi
       window.addEventListener(
         "click",
-        function () {
+        () => {
           music.muted = false;
-          music.play();
+          music.play().catch(() => {});
         },
         { once: true }
       );
-      // Animasi transisi antar bagian
+
+      // Animasi Pindah Section
       function showSection(n) {
         const current = document.querySelector(
           "div[id^='section']:not(.hidden)"
         );
         const next = document.getElementById("section" + n);
-
-        // Tambah kelas fade-out ke current
         current.classList.add("fade-out");
 
-        // Setelah animasi selesai, ganti ke section berikutnya
         setTimeout(() => {
-          current.classList.remove("fade-out");
+          current.classList.remove("fade-out", "fade-in");
           current.classList.add("hidden");
 
           next.classList.remove("hidden");
           next.classList.add("fade-in");
 
-          // Hapus kelas animasi setelah selesai
-          setTimeout(() => {
-            next.classList.remove("fade-in");
-          }, 500);
-        }, 500); // Durasi fade-out
+          setTimeout(() => next.classList.remove("fade-in"), 500);
+        }, 500);
       }
     </script>
   </body>
