@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Percakapan Interaktif</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap");
+      body {
+        font-family: "Inter", sans-serif;
+      }
+
+      .chat-bubble {
+        animation: slideIn 0.3s ease-out;
+      }
+
+      @keyframes slideIn {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .pulse-ring {
+        animation: pulse 2s infinite;
+      }
+
+      @keyframes pulse {
+        0% {
+          transform: scale(1);
+          opacity: 1;
+        }
+        50% {
+          transform: scale(1.1);
+          opacity: 0.7;
+        }
+        100% {
+          transform: scale(1);
+          opacity: 1;
+        }
+      }
+
+      .audio-wave {
+        display: inline-flex;
+        align-items: center;
+        gap: 2px;
+      }
+
+      .wave-bar {
+        width: 3px;
+        background: currentColor;
+        animation: wave 1.5s infinite ease-in-out;
+      }
+
+      .wave-bar:nth-child(1) {
+        height: 10px;
+        animation-delay: 0s;
+      }
+      .wave-bar:nth-child(2) {
+        height: 15px;
+        animation-delay: 0.1s;
+      }
+      .wave-bar:nth-child(3) {
+        height: 8px;
+        animation-delay: 0.2s;
+      }
+      .wave-bar:nth-child(4) {
+        height: 12px;
+        animation-delay: 0.3s;
+      }
+
+      @keyframes wave {
+        0%,
+        100% {
+          transform: scaleY(1);
+        }
+        50% {
+          transform: scaleY(0.3);
+        }
+      }
+    </style>
+  </head>
+  <body
+    class="bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 min-h-screen"
+  >
+    <div class="container mx-auto px-4 py-8 max-w-4xl">
+      <!-- Header -->
+      <div class="text-center mb-8">
+        <h1 class="text-4xl font-bold text-white mb-2">
+          💬 Percakapan Interaktif
+        </h1>
+        <p class="text-blue-200">Klik tombol play untuk mendengar percakapan</p>
+      </div>
+
+      <!-- Chat Container -->
+      <div class="bg-white/10 backdrop-blur-lg rounded-2xl p-6 mb-6 shadow-2xl">
+        <div id="chatContainer" class="space-y-4 h-96 overflow-y-auto mb-4">
+          <!-- Chat bubbles akan muncul di sini -->
+        </div>
+
+        <!-- Controls -->
+        <div class="flex justify-center space-x-4">
+          <button
+            id="startBtn"
+            class="bg-green-500 hover:bg-green-600 text-white px-6 py-3 rounded-full font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg"
+          >
+            ▶️ Mulai Percakapan
+          </button>
+          <button
+            id="pauseBtn"
+            class="bg-yellow-500 hover:bg-yellow-600 text-white px-6 py-3 rounded-full font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg"
+            disabled
+          >
+            ⏸️ Jeda
+          </button>
+          <button
+            id="resetBtn"
+            class="bg-red-500 hover:bg-red-600 text-white px-6 py-3 rounded-full font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg"
+          >
+            🔄 Reset
+          </button>
+        </div>
+      </div>
+
+      <!-- Conversation Topics -->
+      <div class="grid md:grid-cols-3 gap-4">
+        <div
+          class="bg-white/10 backdrop-blur-lg rounded-xl p-4 text-center hover:bg-white/20 transition-all cursor-pointer"
+          onclick="loadConversation('greeting')"
+        >
+          <div class="text-3xl mb-2">🎓</div>
+          <h3 class="text-white font-semibold">School Conversation</h3>
+          <p class="text-blue-200 text-sm">
+            Ann & Gerald talking about classes
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      let currentConversation = [];
+      let currentIndex = 0;
+      let isPlaying = false;
+      let playInterval;
+
+      const conversations = {
+        greeting: [
+          {
+            speaker: "Ann",
+            text: "What class do you have next?",
+            avatar: "👩",
+            index: 1,
+          },
+          {
+            speaker: "Gerald",
+            text: "I have Physical Education. It's so much fun!",
+            avatar: "👨",
+            index: 1,
+          },
+          {
+            speaker: "Ann",
+            text: "Lucky you! I have Computer Science. It’s tough but interesting.",
+            avatar: "👩",
+            index: 2,
+          },
+          {
+            speaker: "Gerald",
+            text: "Cool! Let’s catch up during recess, okay?",
+            avatar: "👨",
+            index: 2,
+          },
+          {
+            speaker: "Ann",
+            text: "Sure, catch you later!",
+            avatar: "👩",
+            index: 3,
+          },
+        ],
+      };
+
+      function loadConversation(type) {
+        currentConversation = conversations[type];
+        currentIndex = 0;
+        clearChat();
+        document.getElementById("startBtn").disabled = false;
+        document.getElementById("pauseBtn").disabled = true;
+        isPlaying = false;
+
+        // Show first message immediately
+        if (currentConversation.length > 0) {
+          addChatBubble(currentConversation[0]);
+          currentIndex = 1;
+        }
+      }
+
+      function clearChat() {
+        document.getElementById("chatContainer").innerHTML = "";
+      }
+
+      function addChatBubble(message) {
+        const chatContainer = document.getElementById("chatContainer");
+        const isLeft =
+          message.speaker === "Ann" || message.speaker === "Gerald"
+            ? true
+            : false;
+
+        const bubbleDiv = document.createElement("div");
+        bubbleDiv.className = `chat-bubble flex ${
+          isLeft ? "justify-start" : "justify-end"
+        } mb-4`;
+
+        bubbleDiv.innerHTML = `
+                <div class="flex items-end space-x-2 max-w-xs lg:max-w-md">
+                    ${
+                      isLeft
+                        ? `<div class="text-2xl">${message.avatar}</div>`
+                        : ""
+                    }
+                    <div class="${
+                      isLeft ? "bg-white/20" : "bg-blue-500"
+                    } text-white p-3 rounded-2xl ${
+          isLeft ? "rounded-bl-sm" : "rounded-br-sm"
+        } shadow-lg">
+                        <div class="text-xs opacity-75 mb-1">${
+                          message.speaker
+                        }</div>
+                        <div class="text-sm">${message.text}</div>
+                        <button class="mt-2 flex items-center space-x-2 text-xs opacity-75 hover:opacity-100 transition-opacity" onclick="playAudio('${
+                          message.text
+                        }')">
+                            <span>🔊</span>
+                            <div class="audio-wave">
+                                <div class="wave-bar"></div>
+                                <div class="wave-bar"></div>
+                                <div class="wave-bar"></div>
+                                <div class="wave-bar"></div>
+                            </div>
+                        </button>
+                    </div>
+                    ${
+                      !isLeft
+                        ? `<div class="text-2xl">${message.avatar}</div>`
+                        : ""
+                    }
+                </div>
+            `;
+
+        chatContainer.appendChild(bubbleDiv);
+        chatContainer.scrollTop = chatContainer.scrollHeight;
+      }
+
+      let currentAudio = null;
+
+      function playAudio(speaker, index) {
+        const filename = `..audio/${speaker}${index}.m4a`;
+        if (currentAudio) {
+          currentAudio.pause();
+          currentAudio.currentTime = 0;
+        }
+
+        currentAudio = new Audio(filename);
+        currentAudio.play().catch((e) => {
+          console.error("Gagal memutar audio:", e);
+          alert("Audio tidak ditemukan atau gagal diputar.");
+        });
+      }
+
+      function startConversation() {
+        if (currentConversation.length === 0) {
+          alert("Pilih topik percakapan terlebih dahulu!");
+          return;
+        }
+
+        isPlaying = true;
+        document.getElementById("startBtn").disabled = true;
+        document.getElementById("pauseBtn").disabled = false;
+
+        playInterval = setInterval(() => {
+          if (currentIndex < currentConversation.length) {
+            addChatBubble(currentConversation[currentIndex]);
+            currentIndex++;
+          } else {
+            pauseConversation();
+            alert("Percakapan selesai! 🎉");
+          }
+        }, 2000);
+      }
+
+      function pauseConversation() {
+        isPlaying = false;
+        clearInterval(playInterval);
+        document.getElementById("startBtn").disabled = false;
+        document.getElementById("pauseBtn").disabled = true;
+      }
+
+      function resetConversation() {
+        pauseConversation();
+        currentIndex = 0;
+        clearChat();
+        if (currentConversation.length > 0) {
+          addChatBubble(currentConversation[0]);
+          currentIndex = 1;
+        }
+      }
+
+      // Event listeners
+      document
+        .getElementById("startBtn")
+        .addEventListener("click", startConversation);
+      document
+        .getElementById("pauseBtn")
+        .addEventListener("click", pauseConversation);
+      document
+        .getElementById("resetBtn")
+        .addEventListener("click", resetConversation);
+
+      // Load default conversation
+      loadConversation("greeting");
+    </script>
+    <script>
+      (function () {
+        function c() {
+          var b = a.contentDocument || a.contentWindow.document;
+          if (b) {
+            var d = b.createElement("script");
+            d.innerHTML =
+              "window.__CF$cv$params={r:'95c04a8c217755ec',t:'MTc1MTk4NTE1MC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";
+            b.getElementsByTagName("head")[0].appendChild(d);
+          }
+        }
+        if (document.body) {
+          var a = document.createElement("iframe");
+          a.height = 1;
+          a.width = 1;
+          a.style.position = "absolute";
+          a.style.top = 0;
+          a.style.left = 0;
+          a.style.border = "none";
+          a.style.visibility = "hidden";
+          document.body.appendChild(a);
+          if ("loading" !== document.readyState) c();
+          else if (window.addEventListener)
+            document.addEventListener("DOMContentLoaded", c);
+          else {
+            var e = document.onreadystatechange || function () {};
+            document.onreadystatechange = function (b) {
+              e(b);
+              "loading" !== document.readyState &&
+                ((document.onreadystatechange = e), c());
+            };
+          }
+        }
+      })();
+    </script>
+  </body>
+</html>

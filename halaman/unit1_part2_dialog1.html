@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dialog 1 - Interactive Conversation</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Tambahkan ini di <head> -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+    <audio id="clickSound" src="../sounds/click.mp3" preload="auto"></audio>
+
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap");
+      body {
+        font-family: "Inter", sans-serif;
+      }
+      .chat-bubble {
+        animation: slideIn 0.4s ease;
+      }
+      @keyframes slideIn {
+        from {
+          transform: translateY(20px);
+          opacity: 0;
+        }
+        to {
+          transform: translateY(0);
+          opacity: 1;
+        }
+      }
+      @keyframes fadeUp {
+        from {
+          opacity: 0;
+          transform: translateY(30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .animate-fadeUp {
+        animation: fadeUp 0.8s ease-out forwards;
+      }
+    </style>
+  </head>
+  <body
+    class="bg-gradient-to-br from-purple-800 via-blue-900 to-indigo-900 text-white min-h-screen flex flex-col"
+  >
+    <!-- Header -->
+    <header class="text-center py-6">
+      <h1 class="text-3xl font-bold">Dialog 1: English Assignment</h1>
+      <p class="text-blue-200">Percakapan antara Kia dan Bill</p>
+    </header>
+
+    <!-- Chat Section -->
+    <main
+      id="dialog"
+      class="flex-1 container mx-auto px-4 space-y-2 overflow-y-auto pb-10"
+    >
+      <!-- Chat messages inserted via JavaScript -->
+    </main>
+
+    <!-- Controls -->
+    <div class="flex justify-center gap-2 py-2 mb-20 animate-fadeUp">
+      <button
+        id="playBtn"
+        onclick="startConversation()"
+        class="bg-green-600 hover:bg-green-700 text-white px-5 py-2 rounded shadow-lg transition-all duration-300"
+      >
+        ▶️ Play
+      </button>
+
+      <button
+        onclick="resetConversation()"
+        class="bg-red-600 hover:bg-red-700 text-white px-5 py-2 rounded shadow-lg transition-all duration-300"
+      >
+        🔄 Reset
+      </button>
+    </div>
+
+    <!-- Navigation -->
+    <!-- Bottom Toolbar -->
+    <nav
+      class="fixed bottom-0 inset-x-0 bg-white/10 backdrop-blur-md border-t border-white/20 shadow-lg z-50"
+    >
+      <div
+        class="max-w-xl mx-auto flex justify-around items-center py-3 px-4 text-sm text-white"
+      >
+        <!-- Back -->
+        <a
+          onclick="playClick()"
+          href="unit1_part1.html"
+          class="flex flex-col items-center text-white hover:text-purple-300 transition-transform hover:scale-110"
+        >
+          <i class="fas fa-arrow-left text-lg mb-1"></i>
+          <span class="text-xs">Back</span>
+        </a>
+
+        <!-- Home -->
+        <a
+          onclick="playClick()"
+          href="../menu.html"
+          class="flex flex-col items-center text-white hover:text-blue-300 transition-transform hover:scale-110"
+        >
+          <i class="fas fa-home text-lg mb-1"></i>
+          <span class="text-xs">Home</span>
+        </a>
+
+        <!-- Dialog 2 -->
+        <a
+          onclick="playClick()"
+          href="unit1_part2_dialog2.html"
+          class="flex flex-col items-center text-white hover:text-green-300 transition-transform hover:scale-110"
+        >
+          <i class="fas fa-arrow-right text-lg mb-1"></i>
+          <span class="text-xs">Dialog 2</span>
+        </a>
+      </div>
+    </nav>
+
+    <script>
+      function playClick() {
+        const audio = document.getElementById("clickSound");
+        if (audio) {
+          audio.currentTime = 0;
+          audio.play();
+        }
+      }
+      const conversation = [
+        {
+          speaker: "Kia",
+          text: "Hey! Did you finish the English assignment?",
+        },
+        {
+          speaker: "Bill",
+          text: "Not yet, I’m still working on it. History class was kind of boring today.",
+        },
+        {
+          speaker: "Kia",
+          text: "Yeah, I agree. Wanna hang out after school? Maybe review Math together?",
+        },
+        {
+          speaker: "Bill",
+          text: "Sounds good! See you later then.",
+        },
+      ];
+
+      const container = document.getElementById("dialog");
+      const playBtn = document.getElementById("playBtn");
+
+      let index = 0;
+      let currentAudio = null;
+      let isStopped = false;
+      let isPlaying = false;
+
+      function playConversation() {
+        if (index < conversation.length && !isStopped) {
+          const { speaker, text } = conversation[index];
+          const audioPath = `../audio/${speaker}${index + 1}.m4a`;
+          const audio = new Audio(audioPath);
+          currentAudio = audio;
+
+          const bubble = document.createElement("div");
+          bubble.className = `chat-bubble max-w-lg mx-${
+            speaker === "Kia" ? "auto ml-0" : "auto mr-0"
+          } p-4 bg-white/20 rounded-xl shadow-lg`;
+          bubble.innerHTML = `<strong>${speaker}:</strong> <p>${text}</p>`;
+          container.appendChild(bubble);
+          container.scrollTop = container.scrollHeight;
+
+          audio.play().catch((err) => {
+            console.error("Gagal memutar audio:", err);
+          });
+
+          audio.onended = () => {
+            index++;
+            playConversation(); // lanjut ke audio berikutnya
+          };
+        } else {
+          isPlaying = false;
+          playBtn.disabled = false;
+        }
+      }
+
+      function startConversation() {
+        if (isPlaying || index >= conversation.length) return;
+        isStopped = false;
+        isPlaying = true;
+        playBtn.disabled = true;
+        playConversation();
+      }
+
+      function stopConversation() {
+        isStopped = true;
+        isPlaying = false;
+        if (currentAudio) {
+          currentAudio.pause();
+          currentAudio.currentTime = 0;
+        }
+        playBtn.disabled = false;
+      }
+
+      function resetConversation() {
+        stopConversation();
+        index = 0;
+        container.innerHTML = "";
+      }
+
+      window.onload = () => {
+        resetConversation(); // tampilkan kosong dulu saat halaman dibuka
+      };
+    </script>
+  </body>
+</html>

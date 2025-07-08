@@ -3,126 +3,23 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>e-Modul - Halaman Awal</title>
+    <title>e‑Modul – Halaman Awal</title>
     <link rel="stylesheet" href="css/style.css" />
     <link rel="stylesheet" href="bootstrap/css/bootstrap.css" />
-    <link rel="stylesheet" href="css/navigasi.css" />
   </head>
-  <body class="bg_awal">
-    <!-- Halaman Awal -->
-    <div
-      id="halamanAwal"
-      class="container"
-      style="
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        height: 100vh;
-      "
-    >
-      <h2
-        class="text-center"
-        style="font-size: 1.5rem; font-weight: bold; color: #f2a65a"
-      >
-        Information <br />
-        Communication <br />
-        at School
-      </h2>
-      <button id="startBtn">Start Learning</button>
-    </div>
-
-    <!-- Halaman Menu -->
-    <div id="halamanMenu" class="container" style="display: none">
-      <!-- Navigasi atas -->
-      <div class="top-nav">
-        <a href="../index.html"
-          ><img src="../img/icon/home.png" alt="Home" class="image-home"
-        /></a>
+  <body class="bg-awal">
+    <main class="page-center">
+      <div class="content">
+        <h1 class="title">Information<br />Communication<br />at School</h1>
       </div>
+      <button id="startBtn" class="btn-start">Start Learning</button>
+    </main>
 
-      <!-- Modal Settings -->
-      <!-- Modal Popup Info -->
-      <div id="modalSettings" class="modal">
-        <div class="modal-content">
-          <span class="close-btn" id="closeModal">&times;</span>
-          <h1 style="color: #0212e9"><strong>Informasi Aplikasi</strong></h1>
-          <p><strong>Dibuat oleh:</strong> Tim Tefatie</p>
-          <p>
-            Untuk keperluan program magister atas nama
-            <strong>Fenty Erdiyanti</strong>
-          </p>
-          <p><strong>Versi:</strong> 1.0</p>
-          <p><strong>Hak Cipta:</strong> © 2025 e-Modul</p>
-        </div>
-      </div>
-
-      <!-- Judul Halaman -->
-      <div class="nav-container">
-        <div class="nav-btn"></div>
-        <div class="row justify-content-center">
-          <div
-            class="unit-button"
-            style="background: linear-gradient(to right, #2b78e4, #6fc3df)"
-            id="btnIntro"
-          >
-            Introduction
-          </div>
-
-          <div
-            class="unit-button"
-            style="background: linear-gradient(to right, #8e7cc3, #b4a7d6)"
-          >
-            <strong>Unit 1</strong>
-            <span class="title">Talking about your class schedule</span>
-          </div>
-
-          <div
-            class="unit-button"
-            style="background: linear-gradient(to right, #ea9999, #f6b26b)"
-          >
-            <strong>Unit 2</strong>
-            <span class="title"
-              >Talking about your favorite school subjects</span
-            >
-          </div>
-
-          <div
-            class="unit-button"
-            style="background: linear-gradient(to right, #76c7c0, #3d85c6)"
-          >
-            <strong>Unit 3</strong>
-            <span class="title">Making plans with friends during break</span>
-          </div>
-
-          <div
-            class="unit-button"
-            style="background: linear-gradient(to right, #b07db7, #f9cb9c)"
-          >
-            Glosarium
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- JavaScript untuk mengubah halaman -->
-    <script src="bootstrap/js/bootstrap.bundle.min.js"></script>
-    <script src="js/script.js"></script>
     <script>
-      document
-        .getElementById("btnIntro")
-        .addEventListener("click", function () {
-          // Buat elemen transisi (opsional, jika pakai single page)
-          const container = document.createElement("div");
-          container.className = "page-transition";
-
-          // Redirect ke halaman setelah animasi
-          document.body.appendChild(container);
-
-          setTimeout(() => {
-            window.location.href = "halaman/introduction.html";
-          }, 500); // delay sesuai animasi
-        });
+      document.getElementById("startBtn").addEventListener("click", () => {
+        document.body.classList.replace("bg-awal", "bg-menu");
+        location.href = "menu.html";
+      });
     </script>
   </body>
 </html>

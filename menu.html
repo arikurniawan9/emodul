@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>e-Modul – Menu</title>
+    <link rel="stylesheet" href="css/menu.css" />
+  </head>
+  <body class="bg-menu">
+    <!-- Navigasi Atas -->
+    <header class="top-nav">
+      <!-- <button class="icon-button" id="homeBtn" title="Kembali ke Beranda">
+        <img src="img/icon/home.png" alt="Home" />
+      </button> -->
+      <button class="icon-button" id="settingsBtn" title="Tentang Aplikasi">
+        <img src="img/icon/setting.png" alt="Settings" />
+      </button>
+    </header>
+
+    <!-- Daftar Unit -->
+    <main class="nav-container">
+      <div
+        class="unit-button intro"
+        onclick="location.href='../halaman/introduction.html'"
+      >
+        <strong>Introduction</strong>
+      </div>
+      <div
+        class="unit-button blue"
+        onclick="location.href='../halaman/unit1_part1.html'"
+      >
+        <strong>Unit 1</strong><br />
+        <span>Talking about your class schedule</span>
+      </div>
+      <div class="unit-button purple">
+        <strong>Unit 2</strong><br />
+        <span>Take your break time!</span>
+      </div>
+      <div class="unit-button teal">
+        <strong>Unit 3</strong><br />
+        <span>My Extracurricular Activities</span>
+      </div>
+      <div class="unit-button orange"><strong>Glosarium</strong></div>
+    </main>
+
+    <!-- Modal Popup -->
+    <div class="modal" id="modalSettings">
+      <div class="modal-content">
+        <span class="close-btn" id="closeModal">&times;</span>
+        <h2>Informasi Aplikasi</h2>
+        <p><strong>Pembuat:</strong> Tim Tefatie</p>
+        <p>
+          <strong>Deskripsi:</strong> Aplikasi pembelajaran interaktif untuk
+          siswa.
+        </p>
+        <p>
+          Aplikasi ini dibuat untuk program magister atas nama
+          <strong>Fenty Erdiyanti</strong>.
+        </p>
+        <p><strong>Versi:</strong> 1.0</p>
+        <p><strong>Hak Cipta:</strong> © 2025 e‑Modul</p>
+      </div>
+    </div>
+
+    <script>
+      // Tombol Home
+      //document.getElementById("homeBtn").addEventListener("click", () => {
+      //window.location.href = "index.html";
+      //});
+
+      // Popup Settings
+      const modal = document.getElementById("modalSettings");
+      document.getElementById("settingsBtn").onclick = () =>
+        (modal.style.display = "block");
+      document.getElementById("closeModal").onclick = () =>
+        (modal.style.display = "none");
+      window.onclick = (e) => {
+        if (e.target === modal) modal.style.display = "none";
+      };
+    </script>
+  </body>
+</html>

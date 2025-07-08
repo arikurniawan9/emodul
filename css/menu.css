@@ -1,0 +1,157 @@
+body {
+  margin: 0;
+  font-family: "Segoe UI", sans-serif;
+  background: url("../img/bg_menu.jpg") center/cover no-repeat fixed;
+  color: #fff;
+}
+
+/* Navigasi Atas */
+.top-nav {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  display: flex;
+  gap: 12px;
+}
+
+.icon-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.icon-button img {
+  width: 40px;
+  height: 40px;
+}
+
+.icon-button:hover img {
+  transform: scale(1.2);
+}
+
+/* Container Unit */
+.nav-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 100px;
+  gap: 20px;
+}
+
+.unit-button {
+  width: 80%;
+  max-width: 600px;
+  background: rgba(0, 0, 0, 0.5);
+  padding: 16px;
+  border-radius: 12px;
+  font-size: 1.1rem;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+.unit-button:hover {
+  transform: translateY(-4px);
+}
+
+/* Warna Variasi */
+.intro {
+  background: linear-gradient(to right, #2b78e4, #6fc3df);
+}
+.blue {
+  background: linear-gradient(to right, #6fa8dc, #3d85c6);
+}
+.purple {
+  background: linear-gradient(to right, #8e7cc3, #b4a7d6);
+}
+.teal {
+  background: linear-gradient(to right, #76c7c0, #3d85c6);
+}
+.orange {
+  background: linear-gradient(to right, #ea9999, #f6b26b);
+}
+
+/* Modal Info */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 10;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+}
+
+.modal-content {
+  background: #fff;
+  color: #333;
+  margin: 10% auto;
+  padding: 20px;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 400px;
+  text-align: center;
+  position: relative;
+}
+
+.close-btn {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  font-size: 24px;
+  cursor: pointer;
+  color: #555;
+}
+
+/* Tambahkan di menu.css */
+.title-anim {
+  opacity: 0;
+  animation: fadePop 0.8s forwards ease-out;
+}
+
+@keyframes fadePop {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Pastikan background tetap muncul */
+body.bg-menu {
+  background: url("../img/bg_menu.png") center/cover no-repeat fixed;
+}
+
+.unit-button {
+  opacity: 0;
+  transform: translateY(30px);
+  animation: slideUp 0.6s ease forwards;
+}
+
+.unit-button:nth-child(1) {
+  animation-delay: 0.1s;
+}
+.unit-button:nth-child(2) {
+  animation-delay: 0.2s;
+}
+.unit-button:nth-child(3) {
+  animation-delay: 0.3s;
+}
+.unit-button:nth-child(4) {
+  animation-delay: 0.4s;
+}
+.unit-button:nth-child(5) {
+  animation-delay: 0.5s;
+}
+
+@keyframes slideUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

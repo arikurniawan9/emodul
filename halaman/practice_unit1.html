@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Practice: Unit 1</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+      }
+    </style>
+  </head>
+  <body
+    class="bg-gradient-to-br from-blue-800 via-indigo-900 to-purple-800 text-white min-h-screen flex flex-col justify-between"
+  >
+    <main
+      class="flex flex-col items-center justify-center px-6 py-10 space-y-6"
+    >
+      <h1 class="text-2xl font-bold text-center">🎤 Your turn to speak up!</h1>
+      <p class="text-blue-200 text-center">
+        Try to record your voice while reading the dialogue with your friend and
+        upload your recording as part of this practice assignment at this page
+      </p>
+
+      <!-- Input Nama -->
+      <input
+        id="studentName"
+        type="text"
+        placeholder="Insert Your Name"
+        class="px-4 py-2 rounded text-black w-72 text-center font-medium"
+      />
+
+      <!-- Tombol Rekam -->
+      <div class="flex gap-4">
+        <button
+          id="recordBtn"
+          class="bg-green-600 hover:bg-green-700 px-6 py-3 rounded-lg shadow-lg font-semibold"
+        >
+          🔴 Rekam
+        </button>
+        <button
+          id="stopBtn"
+          class="bg-yellow-600 hover:bg-yellow-700 px-6 py-3 rounded-lg shadow-lg font-semibold"
+          disabled
+        >
+          ⏹️ Stop
+        </button>
+      </div>
+
+      <!-- Audio Playback -->
+      <audio id="audioPlayback" controls class="hidden mt-4"></audio>
+
+      <!-- Tombol Upload -->
+      <button
+        id="uploadBtn"
+        class="bg-blue-600 hover:bg-blue-700 px-6 py-3 rounded-lg shadow-lg font-semibold"
+        disabled
+      >
+        ☁️ Upload ke Google Drive
+      </button>
+
+      <!-- Status -->
+      <p id="status" class="text-sm text-blue-200 mt-2 text-center"></p>
+    </main>
+
+    <!-- Bottom Toolbar -->
+    <nav
+      class="fixed bottom-0 inset-x-0 bg-white/10 backdrop-blur-md border-t border-white/20 shadow-lg z-50"
+    >
+      <div
+        class="max-w-xl mx-auto flex justify-around items-center py-3 px-4 text-sm text-white"
+      >
+        <!-- Back -->
+        <a
+          href="unit1_part2_dialog2.html"
+          class="flex flex-col items-center text-white hover:text-purple-300 transition-transform hover:scale-110"
+        >
+          <i class="fas fa-arrow-left text-lg mb-1"></i>
+          <span class="text-xs">Kembali</span>
+        </a>
+
+        <!-- Home -->
+        <a
+          href="../menu.html"
+          class="flex flex-col items-center text-white hover:text-blue-300 transition-transform hover:scale-110"
+        >
+          <i class="fas fa-home text-lg mb-1"></i>
+          <span class="text-xs">Beranda</span>
+        </a>
+      </div>
+    </nav>
+
+    <script>
+      let mediaRecorder;
+      let recordedChunks = [];
+
+      const recordBtn = document.getElementById("recordBtn");
+      const stopBtn = document.getElementById("stopBtn");
+      const uploadBtn = document.getElementById("uploadBtn");
+      const status = document.getElementById("status");
+      const audioPlayback = document.getElementById("audioPlayback");
+      const nameInput = document.getElementById("studentName");
+
+      let currentBlob = null;
+
+      recordBtn.onclick = async () => {
+        const name = nameInput.value.trim().toLowerCase().replace(/\s+/g, "_");
+        if (!name) {
+          alert("Silakan masukkan namamu terlebih dahulu.");
+          return;
+        }
+
+        const stream = await navigator.mediaDevices.getUserMedia({
+          audio: true,
+        });
+        mediaRecorder = new MediaRecorder(stream);
+
+        recordedChunks = [];
+        mediaRecorder.ondataavailable = (e) => recordedChunks.push(e.data);
+
+        mediaRecorder.onstop = () => {
+          const blob = new Blob(recordedChunks, { type: "audio/webm" });
+          const url = URL.createObjectURL(blob);
+          audioPlayback.src = url;
+          audioPlayback.classList.remove("hidden");
+          uploadBtn.disabled = false;
+          currentBlob = blob;
+
+          uploadBtn.onclick = () => uploadToGoogleDrive(blob, name);
+        };
+
+        mediaRecorder.start();
+        status.innerText = "🎙️ Merekam...";
+        recordBtn.disabled = true;
+        stopBtn.disabled = false;
+      };
+
+      stopBtn.onclick = () => {
+        mediaRecorder.stop();
+        status.innerText = "✅ Rekaman selesai!";
+        recordBtn.disabled = false;
+        stopBtn.disabled = true;
+      };
+
+      function uploadToGoogleDrive(blob, name) {
+        status.innerText = "☁️ Mengunggah...";
+        const formData = new FormData();
+        const timestamp = Date.now();
+        const filename = `${name}-${timestamp}.webm`;
+        formData.append("audio", blob, filename);
+
+        fetch(
+          "https://script.google.com/macros/s/AKfycbxAe0lB-MJNjgcc2ehdFYKG-eUMQajQ3eIK1xYkmdEDC2d74mLzqy8UfvqJ1DkdyYLn/exec",
+          {
+            method: "POST",
+            body: formData,
+          }
+        )
+          .then((res) => res.text())
+          .then((result) => {
+            status.innerText = "✅ Berhasil diupload ke Google Drive!";
+            console.log("Success:", result);
+          })
+          .catch((err) => {
+            status.innerText = "❌ Gagal upload.";
+            console.error("Error:", err);
+          });
+      }
+    </script>
+  </body>
+</html>
