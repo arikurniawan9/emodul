@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Unit 2 - Part 1</title>
+    <style>
+      body {
+        margin: 0;
+        font-family: "Segoe UI", sans-serif;
+        background: linear-gradient(to bottom right, #e0f7fa, #fff8e1);
+        padding: 20px;
+      }
+
+      h1 {
+        text-align: center;
+        color: #2d3748;
+        margin-bottom: 10px;
+      }
+
+      .chat-container {
+        max-width: 700px;
+        margin: 0 auto;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+      }
+
+      .chat-row {
+        display: flex;
+        align-items: flex-start;
+        animation: slideIn 0.6s ease;
+      }
+
+      .chat-row.right {
+        flex-direction: row-reverse;
+      }
+
+      .avatar {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        margin: 0 12px;
+        object-fit: cover;
+        box-shadow: 0 0 6px rgba(0, 0, 0, 0.1);
+      }
+
+      .bubble {
+        background: #fff;
+        padding: 14px 18px;
+        border-radius: 18px;
+        max-width: 75%;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        position: relative;
+        transition: transform 0.3s;
+      }
+
+      .bubble:hover {
+        transform: scale(1.03);
+      }
+
+      .bubble.active {
+        border: 2px solid #4fc3f7;
+        background-color: #e1f5fe;
+      }
+
+      @keyframes slideIn {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .controls {
+        margin-top: 30px;
+        text-align: center;
+      }
+
+      .controls button {
+        background-color: #4caf50;
+        color: white;
+        border: none;
+        padding: 10px 18px;
+        border-radius: 8px;
+        margin: 0 10px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: background 0.3s;
+      }
+
+      .controls button:hover {
+        background-color: #388e3c;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Tombol Navigasi Home -->
+    <div style="position: absolute; top: 15px; left: 15px; z-index: 1000">
+      <a href="../menu.html" title="Kembali ke Menu">
+        <img
+          src="../img/icon/home.png"
+          alt="Home"
+          style="width: 40px; height: 40px"
+        />
+      </a>
+    </div>
+
+    <h1>🗨️ Unit 2 - Part 1:</h1>
+    <h1>Break Time Chat</h1>
+    <h3>
+      Now, practice the dialogue with your friend. Take turns playing the roles
+      of Alya and Ran. Speak clearly and confidently!
+    </h3>
+
+    <div class="chat-container" id="dialogue">
+      <div class="chat-row left">
+        <img src="../img/icon/alya.png" alt="Alya" class="avatar" />
+        <div class="bubble" data-speaker="Alya">Alya: Hey guys! What’s up?</div>
+      </div>
+      <div class="chat-row right">
+        <img src="../img/icon/ran.png" alt="Ran" class="avatar" />
+        <div class="bubble" data-speaker="Ran">
+          Ran: Hi! I’m beat after that PE class. Wanna grab some snacks?
+        </div>
+      </div>
+      <div class="chat-row left">
+        <img src="../img/icon/alya.png" alt="Alya" class="avatar" />
+        <div class="bubble" data-speaker="Alya">
+          Alya: Sure! Let’s hang out at the canteen. That new toast is on fleek!
+        </div>
+      </div>
+      <div class="chat-row right">
+        <img src="../img/icon/ran.png" alt="Ran" class="avatar" />
+        <div class="bubble" data-speaker="Ran">
+          Ran: Cool! But hang on a sec, I gotta grab my wallet.
+        </div>
+      </div>
+      <div class="chat-row left">
+        <img src="../img/icon/alya.png" alt="Alya" class="avatar" />
+        <div class="bubble" data-speaker="Alya">
+          Alya: No worries! I’ll wait. You got this!
+        </div>
+      </div>
+      <div class="chat-row right">
+        <img src="../img/icon/ran.png" alt="Ran" class="avatar" />
+        <div class="bubble" data-speaker="Ran">
+          Ran: Thanks a ton! Catch you later at the table.
+        </div>
+      </div>
+    </div>
+
+    <div class="controls">
+      <button onclick="playDialogue()">▶️ Play</button>
+      <button onclick="stopDialogue()">⏹️ Stop</button>
+      <button onclick="resetDialogue()">🔄 Reset</button>
+    </div>
+    <!-- Tombol Menuju Part 2 -->
+    <div class="controls" style="margin-top: 20px">
+      <a
+        href="unit2_part2.html"
+        style="
+          background-color: #2196f3;
+          color: white;
+          padding: 10px 18px;
+          text-decoration: none;
+          border-radius: 8px;
+          font-weight: bold;
+          display: inline-block;
+          transition: background-color 0.3s;
+        "
+        onmouseover="this.style.backgroundColor='#1976d2'"
+        onmouseout="this.style.backgroundColor='#2196f3'"
+      >
+        ➡️ Go to Part 2
+      </a>
+    </div>
+
+    <script>
+      const audioPath = "../audio/";
+      const dialogue = document.querySelectorAll(".bubble");
+      let current = 0;
+      let isPlaying = false;
+
+      const audioQueue = Array.from(dialogue).map((el, idx) => {
+        const speaker = el.dataset.speaker;
+        const audio = new Audio(
+          `${audioPath}${speaker}${Math.floor(idx / 2) + 1}.wav`
+        );
+        return { el, audio };
+      });
+
+      function playDialogue() {
+        if (isPlaying || current >= audioQueue.length) return;
+        isPlaying = true;
+        playNext();
+      }
+
+      function playNext() {
+        if (current >= audioQueue.length) {
+          isPlaying = false;
+          return;
+        }
+
+        const { el, audio } = audioQueue[current];
+        dialogue.forEach((d) => d.classList.remove("active"));
+        el.classList.add("active");
+        audio.play();
+
+        audio.onended = () => {
+          current++;
+          setTimeout(playNext, 400);
+        };
+      }
+
+      function stopDialogue() {
+        isPlaying = false;
+        if (audioQueue[current]) audioQueue[current].audio.pause();
+        dialogue.forEach((d) => d.classList.remove("active"));
+      }
+
+      function resetDialogue() {
+        stopDialogue();
+        current = 0;
+        audioQueue.forEach(({ audio }) => (audio.currentTime = 0));
+      }
+    </script>
+  </body>
+</html>

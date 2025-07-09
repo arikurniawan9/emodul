@@ -5,11 +5,51 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Unit 3 - Extracurricular Dialogue</title>
     <style>
+      /* Animasi background gradasi */
       body {
         font-family: "Segoe UI", sans-serif;
-        background: linear-gradient(to bottom right, #fdfcfb, #e2d1c3);
         margin: 0;
         padding: 20px;
+        animation: gradientShift 12s ease infinite;
+        background: url("../img/bg_menu.png") no-repeat center center fixed;
+        background-size: 400% 400%;
+        transition: background 2s ease;
+      }
+
+      @keyframes gradientShift {
+        0% {
+          background-position: 0% 50%;
+        }
+        50% {
+          background-position: 100% 50%;
+        }
+        100% {
+          background-position: 0% 50%;
+        }
+      }
+      .typing-title {
+        font-family: monospace;
+        overflow: hidden;
+        white-space: nowrap;
+        border-right: 3px solid #fff;
+        width: 0;
+        animation: typing 4s steps(30, end) forwards,
+          blink 0.7s step-end infinite;
+      }
+
+      @keyframes typing {
+        from {
+          width: 0;
+        }
+        to {
+          width: 100%;
+        }
+      }
+
+      @keyframes blink {
+        50% {
+          border-color: transparent;
+        }
       }
 
       h1,
@@ -71,6 +111,7 @@
         justify-content: center;
         gap: 15px;
         margin-top: 30px;
+        flex-wrap: wrap;
       }
 
       .controls button {
@@ -81,34 +122,102 @@
         color: white;
         font-weight: bold;
         cursor: pointer;
-        transition: background 0.3s;
+        transition: all 0.3s ease;
       }
 
       .controls button:hover {
         background-color: #388e3c;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
       }
 
-      .nav {
-        margin-top: 40px;
+      /* Tombol Home di kiri atas */
+      .nav-home {
+        position: absolute;
+        top: 15px;
+        left: 15px;
+        z-index: 1000;
+      }
+
+      .nav-home img {
+        width: 40px;
+        height: 40px;
+        cursor: pointer;
+        transition: transform 0.3s ease;
+      }
+
+      .nav-home img:hover {
+        transform: scale(1.1);
+      }
+      .animated-btn {
+        display: inline-block;
+        padding: 12px 24px;
+        color: #fff;
+        background: linear-gradient(45deg, #ff6b6b, #f8ad0c);
+        border: none;
+        border-radius: 50px;
+        font-size: 1rem;
+        font-weight: 600;
+        position: relative;
+        overflow: hidden;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+      }
+
+      .animated-btn::before {
+        content: "";
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: rgba(255, 255, 255, 0.2);
+        transform: rotate(45deg) translate(-100%, -100%);
+        transition: transform 0.7s ease;
+      }
+
+      .animated-btn:hover {
+        transform: translateY(-3px) scale(1.02);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+      }
+
+      .animated-btn:hover::before {
+        transform: rotate(45deg) translate(0, 0);
+      }
+      .glow-pulse {
         text-align: center;
+        font-size: 2rem;
+        color: #ffffff;
+        animation: pulseGlow 2.5s infinite ease-in-out;
+        text-shadow: 0 0 5px #ffffff, 0 0 10px #f0f, 0 0 15px #f0f,
+          0 0 20px #0ff;
       }
 
-      .nav a {
-        background: #2196f3;
-        color: white;
-        padding: 10px 16px;
-        text-decoration: none;
-        border-radius: 8px;
-      }
-
-      .nav a:hover {
-        background: #1976d2;
+      @keyframes pulseGlow {
+        0%,
+        100% {
+          transform: scale(1);
+          text-shadow: 0 0 5px #ffffff, 0 0 10px #f0f, 0 0 15px #f0f,
+            0 0 20px #0ff;
+        }
+        50% {
+          transform: scale(1.1);
+          text-shadow: 0 0 10px #fff, 0 0 20px #f0f, 0 0 30px #f0f,
+            0 0 40px #0ff;
+        }
       }
     </style>
   </head>
   <body>
-    <h1>🎧 Unit 3: Extracurricular Activities</h1>
-    <h3 class="center">Listen carefully to the following dialogue!</h3>
+    <!-- Tombol Home -->
+    <div class="nav-home">
+      <a href="../menu.html">
+        <img src="../img/icon/home.png" alt="Home" title="Kembali ke Beranda" />
+      </a>
+    </div>
+    🎧
+    <h1>Unit 3</h1>
+    <h1 class="glow-pulse">Extracurricular Activities</h1>
+    <h3>Listen carefully to the following dialogue!</h3>
 
     <div class="chat-container" id="dialogue">
       <div class="chat-bubble left" data-speaker="Rafi">
@@ -132,13 +241,9 @@
     </div>
 
     <div class="controls">
-      <button onclick="playDialogue()">▶️ Play</button>
-      <button onclick="stopDialogue()">⏹️ Stop</button>
-      <button onclick="resetDialogue()">🔄 Reset</button>
-    </div>
-
-    <div class="nav">
-      <a href="../menu.html">🏠 Home</a>
+      <button class="animated-btn" onclick="playDialogue()">▶️ Play</button>
+      <button class="animated-btn" onclick="stopDialogue()">⏹️ Stop</button>
+      <button class="animated-btn" onclick="resetDialogue()">🔄 Reset</button>
     </div>
 
     <script>
@@ -151,7 +256,6 @@
         const audio = new Audio(
           `${audioBasePath}${speaker}${Math.floor(index / 2) + 1}.wav`
         );
-
         audioQueue.push({ el, audio });
       });
 
@@ -172,7 +276,6 @@
 
         const { el, audio } = audioQueue[current];
 
-        // Remove active class from all
         dialogueElements.forEach((d) => d.classList.remove("active"));
         el.classList.add("active");
 

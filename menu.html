@@ -21,18 +21,21 @@
     <main class="nav-container">
       <div
         class="unit-button intro"
-        onclick="location.href='../halaman/introduction.html'"
+        onclick="location.href='halaman/introduction.html'"
       >
         <strong>Introduction</strong>
       </div>
       <div
         class="unit-button blue"
-        onclick="location.href='../halaman/unit1_part1.html'"
+        onclick="location.href='halaman/unit1_part1.html'"
       >
         <strong>Unit 1</strong><br />
         <span>Talking about your class schedule</span>
       </div>
-      <div class="unit-button purple">
+      <div
+        class="unit-button purple"
+        onclick="location.href='halaman/unit2_part1.html'"
+      >
         <strong>Unit 2</strong><br />
         <span>Take your break time!</span>
       </div>
@@ -48,6 +51,9 @@
         onclick="location.href='halaman/glosarium.html'"
       >
         <strong>Glosarium</strong>
+      </div>
+      <div class="unit-button red" onclick="exitApp()">
+        <strong>Exit</strong>
       </div>
     </main>
 
@@ -85,6 +91,20 @@
       window.onclick = (e) => {
         if (e.target === modal) modal.style.display = "none";
       };
+      function exitApp() {
+        const confirmExit = confirm(
+          "Are you sure you want to exit the application?"
+        );
+        if (confirmExit) {
+          if (navigator.app) {
+            navigator.app.exitApp(); // Cordova
+          } else if (navigator.device) {
+            navigator.device.exitApp();
+          } else {
+            window.close(); // fallback
+          }
+        }
+      }
     </script>
   </body>
 </html>
