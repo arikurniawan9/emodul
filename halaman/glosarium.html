@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Glosarium Interaktif</title>
+    <style>
+      body {
+        font-family: "Segoe UI", sans-serif;
+        background: linear-gradient(to bottom right, #a18cd1, #fbc2eb);
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        min-height: 100vh;
+        background: linear-gradient(270deg, #a18cd1, #fbc2eb, #fad0c4);
+        background-size: 600% 600%;
+        animation: gradientShift 15s ease infinite;
+      }
+      @keyframes gradientShift {
+        0% {
+          background-position: 0% 50%;
+        }
+        50% {
+          background-position: 100% 50%;
+        }
+        100% {
+          background-position: 0% 50%;
+        }
+      }
+
+      h1 {
+        margin: 30px 0 10px;
+        font-size: 2.2rem;
+        color: #32296d;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+      }
+
+      .glossary-box {
+        background-color: #ffffffdd;
+        backdrop-filter: blur(6px);
+        border-radius: 15px;
+        padding: 20px;
+        width: 90%;
+        max-width: 400px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+      }
+
+      ul.glossary {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+      }
+
+      ul.glossary li {
+        display: flex;
+        justify-content: space-between;
+        padding: 10px 14px;
+        border-bottom: 1px solid #ccc;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+      }
+
+      ul.glossary li:hover {
+        background-color: #eef2ff;
+      }
+
+      .term {
+        font-weight: 600;
+        color: #1a4ecc;
+      }
+
+      .meaning {
+        color: #333;
+        max-width: 50%;
+        text-align: right;
+        font-size: 0.95rem;
+      }
+
+      .pagination {
+        margin-top: 15px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .pagination button {
+        padding: 6px 12px;
+        border: none;
+        border-radius: 8px;
+        background-color: #4f46e5;
+        color: white;
+        font-weight: bold;
+        cursor: pointer;
+        transition: background-color 0.3s;
+      }
+
+      .pagination button:disabled {
+        background-color: #aaa;
+        cursor: not-allowed;
+      }
+
+      .page-number {
+        font-weight: bold;
+        color: #333;
+      }
+      .nav-top-left {
+        position: fixed;
+        top: 15px;
+        left: 15px;
+        z-index: 1000;
+      }
+
+      .btn-back {
+        width: 40px;
+        height: 40px;
+        border-radius: 8px;
+        transition: transform 0.3s ease, background-color 0.3s ease;
+        padding: 4px;
+      }
+
+      .btn-back:hover {
+        background-color: #e0e7ff;
+        transform: scale(1.15);
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Tombol Navigasi -->
+    <div class="nav-top-left">
+      <a href="javascript:history.back()" title="Kembali">
+        <img src="../img/icon/back.png" alt="Back" class="btn-back" />
+      </a>
+    </div>
+
+    <h1>Glosarium</h1>
+
+    <div class="glossary-box">
+      <ul class="glossary" id="glossary-list"></ul>
+      <div class="pagination">
+        <button id="prevBtn" onclick="prevPage()">‹</button>
+        <span class="page-number" id="pageIndicator">1 / 1</span>
+        <button id="nextBtn" onclick="nextPage()">›</button>
+      </div>
+    </div>
+
+    <script>
+      const data = [
+        ["Bummer!", "Sayang sekali, kecewa"],
+        ["Catch you later!", "Sampai ketemu nanti"],
+        ["Chill out!", "Santai saja, rileks"],
+        ["Cool!", "Keren!"],
+        ["Gotcha!", "Mengerti atau paham"],
+        ["Gonna (going to)", "Akan, hendak"],
+        ["Hang on a sec!", "Tunggu sebentar"],
+        ["Hey guys! / Hi fellas!", "Sapaan akrab ke sekelompok teman"],
+        ["How’s it going?", "Bagaimana kabarmu?"],
+        ["I’m beat!", "Saya capek sekali!"],
+        ["Let’s hang out!", "Ayo jalan-jalan, santai bareng"],
+        ["My bad!", "Maaf ya, kesalahan saya / salahku"],
+        ["No big deal!", "Tidak masalah besar, santai saja"],
+        ["No worries!", "Tidak masalah, santai saja"],
+        ["On fleek", "Sempurna, oke banget"],
+        ["Shoot me a text!", "Kirim pesan ke saya"],
+        ["Thanks a ton!", "Terima kasih banyak!"],
+        ["That’s lit!", "Itu keren banget!"],
+        ["Wanna (want to)", "Ingin"],
+        ["What’s up? / Sup?", "Apa kabar atau apa yang sedang terjadi"],
+        ["You bet!", "Pasti"],
+        ["You got this!", "Kamu pasti bisa! (semangat)"],
+      ];
+
+      const itemsPerPage = 8;
+      let currentPage = 1;
+
+      function renderGlossary() {
+        const list = document.getElementById("glossary-list");
+        list.innerHTML = "";
+
+        const start = (currentPage - 1) * itemsPerPage;
+        const end = start + itemsPerPage;
+
+        data.slice(start, end).forEach(([term, meaning]) => {
+          const li = document.createElement("li");
+          li.innerHTML = `
+          <span class="term">${term}</span>
+          <span class="meaning">${meaning}</span>
+        `;
+          li.addEventListener("click", () => speak(term));
+          list.appendChild(li);
+        });
+
+        document.getElementById(
+          "pageIndicator"
+        ).textContent = `${currentPage} / ${Math.ceil(
+          data.length / itemsPerPage
+        )}`;
+        document.getElementById("prevBtn").disabled = currentPage === 1;
+        document.getElementById("nextBtn").disabled =
+          currentPage === Math.ceil(data.length / itemsPerPage);
+      }
+
+      function prevPage() {
+        if (currentPage > 1) {
+          currentPage--;
+          renderGlossary();
+        }
+      }
+
+      function nextPage() {
+        if (currentPage < Math.ceil(data.length / itemsPerPage)) {
+          currentPage++;
+          renderGlossary();
+        }
+      }
+
+      function speak(text) {
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.lang = "en-US";
+        window.speechSynthesis.cancel();
+        window.speechSynthesis.speak(utterance);
+      }
+
+      renderGlossary();
+    </script>
+  </body>
+</html>

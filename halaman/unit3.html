@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Unit 3 - Extracurricular Dialogue</title>
+    <style>
+      body {
+        font-family: "Segoe UI", sans-serif;
+        background: linear-gradient(to bottom right, #fdfcfb, #e2d1c3);
+        margin: 0;
+        padding: 20px;
+      }
+
+      h1,
+      h3 {
+        text-align: center;
+        color: #333;
+      }
+
+      .chat-container {
+        max-width: 700px;
+        margin: 30px auto;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .chat-bubble {
+        padding: 14px 18px;
+        border-radius: 20px;
+        position: relative;
+        max-width: 80%;
+        font-size: 1rem;
+        transition: background-color 0.4s, transform 0.3s;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      }
+
+      .left {
+        align-self: flex-start;
+        background-color: #e3f2fd;
+        border-bottom-left-radius: 0;
+      }
+
+      .right {
+        align-self: flex-end;
+        background-color: #dcedc8;
+        border-bottom-right-radius: 0;
+      }
+
+      .active {
+        animation: highlight 0.5s ease-in-out forwards;
+      }
+
+      @keyframes highlight {
+        0% {
+          transform: scale(1);
+          box-shadow: 0 0 0 transparent;
+        }
+        50% {
+          transform: scale(1.05);
+          box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+        }
+        100% {
+          transform: scale(1);
+        }
+      }
+
+      .controls {
+        display: flex;
+        justify-content: center;
+        gap: 15px;
+        margin-top: 30px;
+      }
+
+      .controls button {
+        padding: 10px 18px;
+        border: none;
+        border-radius: 8px;
+        background-color: #4caf50;
+        color: white;
+        font-weight: bold;
+        cursor: pointer;
+        transition: background 0.3s;
+      }
+
+      .controls button:hover {
+        background-color: #388e3c;
+      }
+
+      .nav {
+        margin-top: 40px;
+        text-align: center;
+      }
+
+      .nav a {
+        background: #2196f3;
+        color: white;
+        padding: 10px 16px;
+        text-decoration: none;
+        border-radius: 8px;
+      }
+
+      .nav a:hover {
+        background: #1976d2;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>🎧 Unit 3: Extracurricular Activities</h1>
+    <h3 class="center">Listen carefully to the following dialogue!</h3>
+
+    <div class="chat-container" id="dialogue">
+      <div class="chat-bubble left" data-speaker="Rafi">
+        Rafi: Hey, what extracurricular are you joining today?
+      </div>
+      <div class="chat-bubble right" data-speaker="Dinda">
+        Dinda: I’m joining the English Club. It’s really fun!
+      </div>
+      <div class="chat-bubble left" data-speaker="Rafi">
+        Rafi: Wow, cool! I’m still not sure which one to choose.
+      </div>
+      <div class="chat-bubble right" data-speaker="Dinda">
+        Dinda: Do you like sports? Basketball or futsal is exciting.
+      </div>
+      <div class="chat-bubble left" data-speaker="Rafi">
+        Rafi: Yeah, I’m interested in the futsal club.
+      </div>
+      <div class="chat-bubble right" data-speaker="Dinda">
+        Dinda: You should try it next week. You might like it!
+      </div>
+    </div>
+
+    <div class="controls">
+      <button onclick="playDialogue()">▶️ Play</button>
+      <button onclick="stopDialogue()">⏹️ Stop</button>
+      <button onclick="resetDialogue()">🔄 Reset</button>
+    </div>
+
+    <div class="nav">
+      <a href="../menu.html">🏠 Home</a>
+    </div>
+
+    <script>
+      const audioBasePath = "../audio/";
+      const dialogueElements = document.querySelectorAll(".chat-bubble");
+      const audioQueue = [];
+
+      dialogueElements.forEach((el, index) => {
+        const speaker = el.dataset.speaker;
+        const audio = new Audio(
+          `${audioBasePath}${speaker}${Math.floor(index / 2) + 1}.wav`
+        );
+
+        audioQueue.push({ el, audio });
+      });
+
+      let current = 0;
+      let isPlaying = false;
+
+      function playDialogue() {
+        if (isPlaying || current >= audioQueue.length) return;
+        isPlaying = true;
+        playNext();
+      }
+
+      function playNext() {
+        if (current >= audioQueue.length) {
+          isPlaying = false;
+          return;
+        }
+
+        const { el, audio } = audioQueue[current];
+
+        // Remove active class from all
+        dialogueElements.forEach((d) => d.classList.remove("active"));
+        el.classList.add("active");
+
+        audio.play();
+        audio.onended = () => {
+          current++;
+          setTimeout(playNext, 400);
+        };
+      }
+
+      function stopDialogue() {
+        isPlaying = false;
+        if (audioQueue[current]) audioQueue[current].audio.pause();
+        dialogueElements.forEach((d) => d.classList.remove("active"));
+      }
+
+      function resetDialogue() {
+        stopDialogue();
+        current = 0;
+        audioQueue.forEach(({ audio }) => {
+          audio.currentTime = 0;
+        });
+      }
+    </script>
+  </body>
+</html>
