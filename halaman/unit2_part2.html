@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Quiz – Unit 2 Part 2</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Balsamiq+Sans&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        font-family: "Balsamiq Sans", cursive;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        background: linear-gradient(-45deg, #ff9a9e, #fad0c4, #a1c4fd, #c2e9fb);
+        background-size: 400% 400%;
+        animation: gradientBG 15s ease infinite;
+      }
+
+      @keyframes gradientBG {
+        0% {
+          background-position: 0% 50%;
+        }
+        50% {
+          background-position: 100% 50%;
+        }
+        100% {
+          background-position: 0% 50%;
+        }
+      }
+
+      .quiz-container {
+        background: white;
+        border-radius: 16px;
+        padding: 30px;
+        width: 90%;
+        max-width: 500px;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        text-align: center;
+      }
+
+      h2 {
+        font-size: 1.5em;
+        margin-bottom: 10px;
+        color: #222;
+      }
+
+      .lives {
+        font-size: 1.2em;
+        color: red;
+        margin-bottom: 10px;
+      }
+
+      .question {
+        font-size: 1.1em;
+        margin: 20px 0;
+        color: #333;
+      }
+
+      .options button {
+        display: block;
+        width: 100%;
+        margin: 10px 0;
+        padding: 12px;
+        font-size: 1em;
+        border-radius: 10px;
+        border: 2px solid #ccc;
+        background: #f7f7f7;
+        transition: all 0.3s;
+        cursor: pointer;
+        font-weight: bold;
+      }
+
+      .options button:hover {
+        background-color: #6fa8dc;
+        color: white;
+        transform: scale(1.03);
+      }
+
+      .options button.correct {
+        background-color: #4caf50 !important;
+        color: white;
+      }
+
+      .options button.wrong {
+        background-color: #f44336 !important;
+        color: white;
+      }
+
+      .score {
+        margin-top: 15px;
+        font-weight: bold;
+        font-size: 1em;
+      }
+
+      .game-over {
+        display: none;
+        margin-top: 30px;
+      }
+
+      .game-over p {
+        font-size: 1.3em;
+        font-weight: bold;
+        margin-bottom: 20px;
+      }
+
+      .game-over button {
+        padding: 10px 20px;
+        font-size: 1em;
+        border: none;
+        border-radius: 10px;
+        background-color: #2196f3;
+        color: white;
+        margin: 5px;
+        cursor: pointer;
+      }
+
+      .game-over button:hover {
+        background-color: #1976d2;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="quiz-container">
+      <h1>Quiz</h1>
+      <h4>
+        Let's play a fun quiz! After reading the dialogue, respond to the
+        questions.
+      </h4>
+      <div class="lives" id="lives">❤️❤️❤️</div>
+      <div class="question" id="question">Loading...</div>
+      <div class="options" id="options"></div>
+      <div class="score" id="score">Score: 0</div>
+
+      <div class="game-over" id="gameOver">
+        <p id="gameOverText">Game Over!</p>
+        <button onclick="location.href='unit2_part1.html'">
+          Review Unit 2 Part 1
+        </button>
+        <button onclick="restartGame()">Try Again</button>
+      </div>
+    </div>
+
+    <!-- Sound Effects -->
+    <audio id="soundCorrect" src="../sounds/correct.mp3"></audio>
+    <audio id="soundWrong" src="../sounds/wrong.mp3"></audio>
+    <audio id="soundHover" src="../sounds/hover.mp3"></audio>
+
+    <script>
+      const questions = [
+        {
+          question: "What does Ran mean by saying “I’m beat”?",
+          options: [
+            "She’s excited",
+            "She’s very tired",
+            "She’s angry",
+            "She’s hungry",
+          ],
+          answer: "She’s very tired",
+        },
+        {
+          question: "Where do Alya and Ran plan to go during the break?",
+          options: [
+            "The classroom",
+            "The library",
+            "The canteen",
+            "The sports field",
+          ],
+          answer: "The canteen",
+        },
+        {
+          question: "What does Alya mean when she says “No worries!”?",
+          options: [
+            "I don’t like it",
+            "It’s not a problem",
+            "Hurry up",
+            "I'm angry",
+          ],
+          answer: "It’s not a problem",
+        },
+        {
+          question: "The expression “on fleek” in the dialog refers to:",
+          options: [
+            "Being late",
+            "Being too expensive",
+            "Being messy",
+            "Being very good or perfect",
+          ],
+          answer: "Being very good or perfect",
+        },
+        {
+          question: "What does Rani mean by “Catch you later”?",
+          options: [
+            "Don’t talk to me",
+            "See you later",
+            "Come with me now",
+            "Let's go now",
+          ],
+          answer: "See you later",
+        },
+      ];
+
+      let current = 0;
+      let score = 0;
+      let lives = 3;
+
+      const questionEl = document.getElementById("question");
+      const optionsEl = document.getElementById("options");
+      const livesEl = document.getElementById("lives");
+      const scoreEl = document.getElementById("score");
+      const gameOverEl = document.getElementById("gameOver");
+      const gameOverText = document.getElementById("gameOverText");
+
+      const soundCorrect = document.getElementById("soundCorrect");
+      const soundWrong = document.getElementById("soundWrong");
+      const soundHover = document.getElementById("soundHover");
+
+      function shuffleArray(arr) {
+        for (let i = arr.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [arr[i], arr[j]] = [arr[j], arr[i]];
+        }
+      }
+
+      function showQuestion() {
+        const q = questions[current];
+        questionEl.textContent = q.question;
+        optionsEl.innerHTML = "";
+        const shuffledOptions = [...q.options];
+        shuffleArray(shuffledOptions);
+
+        shuffledOptions.forEach((opt) => {
+          const btn = document.createElement("button");
+          btn.textContent = opt;
+          btn.addEventListener("mouseenter", () => soundHover.play());
+          btn.addEventListener("click", () => checkAnswer(btn, opt));
+          optionsEl.appendChild(btn);
+        });
+      }
+
+      function checkAnswer(button, selected) {
+        const correctAnswer = questions[current].answer;
+        const buttons = optionsEl.querySelectorAll("button");
+
+        buttons.forEach((btn) => {
+          btn.disabled = true;
+          if (btn.textContent === correctAnswer) {
+            btn.classList.add("correct");
+          } else if (btn.textContent === selected) {
+            btn.classList.add("wrong");
+          }
+        });
+
+        if (selected === correctAnswer) {
+          score += 20;
+          scoreEl.textContent = "Score: " + score;
+          soundCorrect.play();
+        } else {
+          lives--;
+          soundWrong.play();
+          updateLives();
+        }
+
+        setTimeout(() => {
+          current++;
+          if (lives <= 0) {
+            gameOver(false);
+          } else if (current >= questions.length) {
+            gameOver(true);
+          } else {
+            showQuestion();
+          }
+        }, 1000);
+      }
+
+      function updateLives() {
+        const hearts = ["❤️", "❤️", "❤️"];
+        livesEl.innerHTML = hearts.slice(0, lives).join("");
+      }
+
+      function gameOver(won) {
+        gameOverEl.style.display = "block";
+        gameOverText.textContent = won
+          ? "You completed the quiz! 🎉\nScore: " + score
+          : "You’ve run out of lives 😢";
+      }
+
+      function restartGame() {
+        current = 0;
+        score = 0;
+        lives = 3;
+        scoreEl.textContent = "Score: 0";
+        gameOverEl.style.display = "none";
+        shuffleArray(questions);
+        updateLives();
+        showQuestion();
+      }
+
+      shuffleArray(questions);
+      showQuestion();
+    </script>
+  </body>
+</html>
