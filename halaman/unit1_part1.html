@@ -1,39 +1,36 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Unit 1</title>
+    <title>Unit 1 - Our School Subject</title>
     <link rel="stylesheet" href="../css/menu.css" />
     <link rel="stylesheet" href="../css/unit1.css" />
   </head>
   <body>
     <div class="home-btn-container">
-      <!-- Tombol Navigasi -->
       <div class="nav-btn">
-        <a href="javascript:history.back()"
-          ><img src="../img/icon/back.png" alt="Back" class="image-back"
-        /></a>
-
+        <a href="javascript:history.back()">
+          <img src="../img/icon/back.png" alt="Back" class="image-back" />
+        </a>
         <a class="icon-button" id="homeBtn" title="Kembali ke Beranda">
           <img src="../img/icon/home.png" alt="Home" />
         </a>
       </div>
     </div>
+
     <h1>Our School Subject</h1>
-    <h4>Repeat every words you hear!</h4>
+    <h4>Repeat every word you hear!</h4>
 
     <div class="flashcard-container">
       <div id="flashcard" class="flashcard">
         <div class="flashcard-face flashcard-front">
-          <div class="language-label" id="front-language">ENGLISH</div>
+          <div class="language-label">ENGLISH</div>
           <div class="word-display" id="english-word">Hello</div>
         </div>
         <div class="flashcard-face flashcard-back">
-          <div class="language-label" id="back-language">TRANSLATION</div>
+          <div class="language-label">INDONESIAN</div>
           <div class="translation" id="indonesian-translation">Halo</div>
-          <div class="translation" id="arabic-translation">مرحبا</div>
-          <div class="translation" id="sundanese-translation">Sampurasun</div>
         </div>
       </div>
     </div>
@@ -46,7 +43,7 @@
     <div class="navigation">
       <button id="prev-btn">← Previous</button>
       <button id="next-btn">Next →</button>
-      <button id="next-btn" onclick="location.href='unit1_part2_dialog1.html'">
+      <button onclick="location.href='unit1_part2_dialog1.html'">
         Next Part →
       </button>
     </div>
@@ -56,99 +53,34 @@
     </div>
 
     <script>
-      // Flashcard data
       const flashcards = [
-        {
-          english: "English",
-          indonesian: "Bahasa Inggris",
-          arabic: "اللغة الإنجليزية",
-        },
-        {
-          english: "Indonesian",
-          indonesian: "Bahasa Indonesia",
-          arabic: "اللغة الإندونيسية",
-        },
-        {
-          english: "Sundanese",
-          indonesian: "Basa Sunda",
-          arabic: "اللغة السوندية",
-        },
-        {
-          english: "Arabic",
-          indonesian: "Bahasa Arab",
-          arabic: "اللغة العربية",
-        },
-        {
-          english: "Math",
-          indonesian: "Matematika",
-          arabic: "رياضيات",
-        },
-        {
-          english: "Civics",
-          indonesian: "Pendidikan Kewarganegaraan",
-          arabic: "التربية المدنية",
-        },
-        {
-          english: "Informatics",
-          indonesian: "Informatika",
-          arabic: "علوم الحاسوب",
-        },
-        {
-          english: "Art",
-          indonesian: "Seni",
-          arabic: "فن",
-        },
-        {
-          english: "Social Science",
-          indonesian: "Ilmu Sosial",
-          arabic: "العلوم الاجتماعية",
-        },
-        {
-          english: "Science",
-          indonesian: "Ilmu Pengetahuan Alam",
-          arabic: "العلوم الطبيعية",
-        },
-        {
-          english: "Physical Education",
-          indonesian: "Pendidikan Jasmani",
-          arabic: "التربية البدنية",
-        },
-        {
-          english: "Al-Quran",
-          indonesian: "Pendidikan Al-Quran",
-          arabic: "التربية الإسلامية",
-        },
+        { english: "English", indonesian: "Bahasa Inggris" },
+        { english: "Indonesian", indonesian: "Bahasa Indonesia" },
+        { english: "Arabic", indonesian: "Bahasa Arab" },
+        { english: "Math", indonesian: "Matematika" },
+        { english: "Civics", indonesian: "Pendidikan Kewarganegaraan" },
+        { english: "Informatics", indonesian: "Informatika" },
+        { english: "Art", indonesian: "Seni" },
+        { english: "Social Science", indonesian: "Ilmu Sosial" },
+        { english: "Science", indonesian: "Ilmu Pengetahuan Alam" },
+        { english: "Physical Education", indonesian: "Pendidikan Jasmani" },
+        { english: "Al-Quran", indonesian: "Pendidikan Al-Quran" },
         {
           english: "Islamic Ethics and Faith",
-          indonesian: "Pendidikan Etika dan Kepercayaan Islam",
-          arabic: "التربية الإسلامية والأخلاق",
+          indonesian: "Etika dan Keimanan Islam",
         },
-        {
-          english: "Islamic History",
-          indonesian: "Sejarah Islam",
-          arabic: "التاريخ الإسلامي",
-        },
-        {
-          english: "Islamic Worship",
-          indonesian: "Ibadah Islam",
-          arabic: "عبادة إسلامية",
-        },
+        { english: "Islamic History", indonesian: "Sejarah Islam" },
+        { english: "Islamic Worship", indonesian: "Ibadah Islam" },
         {
           english: "Islamic Social Interaction",
           indonesian: "Interaksi Sosial Islam",
-          arabic: "التفاعل الاجتماعي الإسلامي",
         },
       ];
 
-      // DOM elements
       const flashcard = document.getElementById("flashcard");
       const englishWord = document.getElementById("english-word");
       const indonesianTranslation = document.getElementById(
         "indonesian-translation"
-      );
-      const arabicTranslation = document.getElementById("arabic-translation");
-      const sundaneseTranslation = document.getElementById(
-        "sundanese-translation"
       );
       const flipBtn = document.getElementById("flip-btn");
       const speakBtn = document.getElementById("speak-btn");
@@ -157,27 +89,38 @@
       const currentCardDisplay = document.getElementById("current-card");
       const totalCardsDisplay = document.getElementById("total-cards");
 
-      // Current card index
       let currentCard = 0;
-
-      // Initialize
       totalCardsDisplay.textContent = flashcards.length;
-      updateCardDisplay();
 
-      // Event listeners
       flashcard.addEventListener("click", flipCard);
       flipBtn.addEventListener("click", flipCard);
-      speakBtn.addEventListener("click", speakWord);
+      speakBtn.addEventListener("click", speakEnglish);
       prevBtn.addEventListener("click", showPrevCard);
       nextBtn.addEventListener("click", showNextCard);
 
-      // Flip card function
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "ArrowLeft") showPrevCard();
+        else if (e.key === "ArrowRight") showNextCard();
+        else if (e.key === " ") flipCard();
+        else if (e.key === "s") speakEnglish();
+      });
+
+      document.getElementById("homeBtn").addEventListener("click", () => {
+        window.location.href = "../index.html";
+      });
+
       function flipCard() {
         flashcard.classList.toggle("flipped");
+
+        // Jika berpindah ke sisi belakang (Indonesian), ucapkan Indonesian-nya
+        if (flashcard.classList.contains("flipped")) {
+          setTimeout(() => {
+            speakIndonesian();
+          }, 400);
+        }
       }
 
-      // Speak the English word
-      function speakWord() {
+      function speakEnglish() {
         const utterance = new SpeechSynthesisUtterance(
           flashcards[currentCard].english
         );
@@ -185,11 +128,17 @@
         window.speechSynthesis.speak(utterance);
       }
 
-      // Show previous card
+      function speakIndonesian() {
+        const utterance = new SpeechSynthesisUtterance(
+          flashcards[currentCard].indonesian
+        );
+        utterance.lang = "id-ID";
+        window.speechSynthesis.speak(utterance);
+      }
+
       function showPrevCard() {
         if (flashcard.classList.contains("flipped")) {
           flashcard.classList.remove("flipped");
-          // Small delay to allow flip animation before changing content
           setTimeout(() => {
             currentCard =
               (currentCard - 1 + flashcards.length) % flashcards.length;
@@ -202,11 +151,9 @@
         }
       }
 
-      // Show next card
       function showNextCard() {
         if (flashcard.classList.contains("flipped")) {
           flashcard.classList.remove("flipped");
-          // Small delay to allow flip animation before changing content
           setTimeout(() => {
             currentCard = (currentCard + 1) % flashcards.length;
             updateCardDisplay();
@@ -217,33 +164,14 @@
         }
       }
 
-      // Update card display
       function updateCardDisplay() {
         const card = flashcards[currentCard];
         englishWord.textContent = card.english;
         indonesianTranslation.textContent = card.indonesian;
-        arabicTranslation.textContent = card.arabic;
-        sundaneseTranslation.textContent = card.sundanese;
         currentCardDisplay.textContent = currentCard + 1;
       }
 
-      // Keyboard navigation
-      document.addEventListener("keydown", (e) => {
-        if (e.key === "ArrowLeft") {
-          showPrevCard();
-        } else if (e.key === "ArrowRight") {
-          showNextCard();
-        } else if (e.key === " ") {
-          flipCard();
-        } else if (e.key === "s") {
-          speakWord();
-        }
-      });
-
-      // Tombol Home
-      document.getElementById("homeBtn").addEventListener("click", () => {
-        window.location.href = "../index.html";
-      });
+      updateCardDisplay();
     </script>
   </body>
 </html>

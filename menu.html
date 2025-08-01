@@ -96,13 +96,7 @@
           "Are you sure you want to exit the application?"
         );
         if (confirmExit) {
-          if (navigator.app) {
-            navigator.app.exitApp(); // Cordova
-          } else if (navigator.device) {
-            navigator.device.exitApp();
-          } else {
-            window.close(); // fallback
-          }
+          window.open("", "_self").close(); // Upaya menutup jendela
         }
       }
     </script>

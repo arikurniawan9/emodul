@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Unit 2 - Activity 3: Watch Videos</title>
+    <style>
+      body {
+        font-family: "Segoe UI", sans-serif;
+        margin: 0;
+        padding: 20px;
+        color: #ffffff;
+        background: #000;
+        overflow-x: hidden;
+        position: relative;
+      }
+
+      /* 3D animated background gradient illusion */
+      .animated-bg {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 200%;
+        height: 200%;
+        background: linear-gradient(45deg, #0f2027, #203a43, #2c5364);
+        background-size: 400% 400%;
+        animation: moveBackground 20s ease infinite;
+        z-index: -1;
+      }
+
+      @keyframes moveBackground {
+        0% {
+          transform: translate3d(0, 0, 0);
+        }
+        50% {
+          transform: translate3d(-25%, -25%, 0);
+        }
+        100% {
+          transform: translate3d(0, 0, 0);
+        }
+      }
+
+      /* Tambahkan backdrop blur ke konten agar teks lebih kontras */
+      .content-wrapper {
+        backdrop-filter: blur(5px);
+        background-color: rgba(0, 0, 0, 0.3);
+        border-radius: 10px;
+        padding: 20px;
+      }
+
+      h1,
+      h2 {
+        text-align: center;
+      }
+
+      .video-section {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 40px;
+        max-width: 800px;
+        margin: 0 auto;
+      }
+
+      .video-card {
+        position: relative;
+        width: 100%;
+        background: linear-gradient(-45deg, #f92d34, #f19176, #72a5f8, #75b2c6);
+        border-radius: 12px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+      }
+
+      .video-wrapper {
+        position: relative;
+        width: 100%;
+        padding-top: 56.25%; /* 16:9 ratio */
+      }
+
+      iframe {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        border: none;
+        border-radius: 0;
+      }
+
+      .overlay-play {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: rgba(0, 0, 0, 0.6);
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 70px;
+        height: 70px;
+        font-size: 28px;
+        cursor: pointer;
+        z-index: 2;
+      }
+
+      .overlay-play:hover {
+        background-color: rgba(0, 0, 0, 0.8);
+      }
+
+      .nav-buttons {
+        text-align: center;
+        margin-top: 40px;
+      }
+
+      .nav-buttons button {
+        padding: 10px 18px;
+        margin: 5px;
+        font-size: 16px;
+        font-weight: bold;
+        border: none;
+        border-radius: 6px;
+        background-color: #2c3e50;
+        color: white;
+        cursor: pointer;
+        transition: background-color 0.3s;
+      }
+
+      .nav-buttons button:hover {
+        background-color: #34495e;
+      }
+
+      @media (max-width: 600px) {
+        .overlay-play {
+          width: 50px;
+          height: 50px;
+          font-size: 20px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="animated-bg"></div>
+    <div class="content-wrapper">
+      <h1>Unit 2 - Activity 3</h1>
+      <h2>Watch these videos to enrich your knowledge!</h2>
+
+      <div class="video-section">
+        <div class="video-card">
+          <h3 style="text-align: center">Video 1</h3>
+          <div class="video-wrapper">
+            <iframe
+              id="player1"
+              src="https://www.youtube.com/embed/BTu-ZFQSvWA?enablejsapi=1"
+              allow="autoplay; encrypted-media"
+              allowfullscreen
+            ></iframe>
+            <button class="overlay-play" onclick="playVideo('player1', this)">
+              ▶
+            </button>
+          </div>
+        </div>
+
+        <div class="video-card">
+          <h3 style="text-align: center">Video 2</h3>
+          <div class="video-wrapper">
+            <iframe
+              id="player2"
+              src="https://www.youtube.com/embed/_-i9SDYeC8U?enablejsapi=1"
+              allow="autoplay; encrypted-media"
+              allowfullscreen
+            ></iframe>
+            <button class="overlay-play" onclick="playVideo('player2', this)">
+              ▶
+            </button>
+          </div>
+        </div>
+
+        <div class="video-card">
+          <h3 style="text-align: center">Video 3 (Short)</h3>
+          <div class="video-wrapper">
+            <iframe
+              id="player3"
+              src="https://www.youtube.com/embed/7USmJATq6sI?enablejsapi=1"
+              allow="autoplay; encrypted-media"
+              allowfullscreen
+            ></iframe>
+            <button class="overlay-play" onclick="playVideo('player3', this)">
+              ▶
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="nav-buttons">
+        <button onclick="location.href='unit2_part2.html'">
+          ← Back to Quiz
+        </button>
+        <button onclick="location.href='../index.html'">🏠 Home</button>
+      </div>
+    </div>
+
+    <!-- YouTube Iframe API -->
+    <script>
+      let players = {};
+
+      function onYouTubeIframeAPIReady() {
+        players.player1 = new YT.Player("player1", {
+          events: { onStateChange: onPlayerStateChange },
+        });
+        players.player2 = new YT.Player("player2", {
+          events: { onStateChange: onPlayerStateChange },
+        });
+        players.player3 = new YT.Player("player3", {
+          events: { onStateChange: onPlayerStateChange },
+        });
+      }
+
+      function playVideo(id, button) {
+        if (players[id]) {
+          for (const pid in players) {
+            if (pid !== id) {
+              players[pid].pauseVideo();
+            }
+          }
+          players[id].playVideo();
+          button.style.display = "none";
+        }
+      }
+
+      function onPlayerStateChange(event) {
+        // Jika video selesai, tampilkan tombol kembali
+        if (event.data === YT.PlayerState.ENDED) {
+          let iframe = event.target.getIframe();
+          let btn = iframe.parentElement.querySelector(".overlay-play");
+          if (btn) btn.style.display = "block";
+        }
+      }
+
+      // Sisipkan API
+      var tag = document.createElement("script");
+      tag.src = "https://www.youtube.com/iframe_api";
+      var firstScriptTag = document.getElementsByTagName("script")[0];
+      firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+    </script>
+  </body>
+</html>
