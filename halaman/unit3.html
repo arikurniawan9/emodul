@@ -4,6 +4,13 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Unit 3 - Extracurricular Dialogue</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Tambahkan ini di <head> -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+    <audio id="clickSound" src="../sounds/click.mp3" preload="auto"></audio>
     <style>
       /* Animasi background gradasi */
       body {
@@ -245,6 +252,45 @@
       <button class="animated-btn" onclick="stopDialogue()">⏹️ Stop</button>
       <button class="animated-btn" onclick="resetDialogue()">🔄 Reset</button>
     </div>
+
+    <!-- Bottom Toolbar -->
+    <nav
+      class="fixed bottom-0 inset-x-0 bg-white/10 backdrop-blur-md border-t border-white/20 shadow-lg z-50"
+    >
+      <div
+        class="max-w-xl mx-auto flex justify-around items-center py-3 px-4 text-sm text-white"
+      >
+        <!-- Back -->
+        <a
+          onclick="playClick()"
+          href="../menu.html"
+          class="flex flex-col items-center text-white hover:text-purple-300 transition-transform hover:scale-110"
+        >
+          <i class="fas fa-arrow-left text-lg mb-1"></i>
+          <span class="text-xs">Back</span>
+        </a>
+
+        <!-- Home -->
+        <a
+          onclick="playClick()"
+          href="../menu.html"
+          class="flex flex-col items-center text-white hover:text-blue-300 transition-transform hover:scale-110"
+        >
+          <i class="fas fa-home text-lg mb-1"></i>
+          <span class="text-xs">Home</span>
+        </a>
+
+        <!-- Dialog 2 -->
+        <a
+          onclick="playClick()"
+          href="unit3_part2_dialog1.html"
+          class="flex flex-col items-center text-white hover:text-green-300 transition-transform hover:scale-110"
+        >
+          <i class="fas fa-arrow-right text-lg mb-1"></i>
+          <span class="text-xs">Activity 2</span>
+        </a>
+      </div>
+    </nav>
 
     <script>
       const audioBasePath = "../audio/";

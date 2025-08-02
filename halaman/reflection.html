@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Elegant 3D Animated Background</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        height: 100vh;
+        overflow: hidden;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        font-family: "Arial", sans-serif;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        perspective: 1000px;
+      }
+
+      .container {
+        position: relative;
+        width: 100%;
+        height: 100%;
+      }
+
+      .floating-shapes {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+      }
+
+      .shape {
+        position: absolute;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 50%;
+        animation: float 20s infinite linear;
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+      }
+
+      .shape:nth-child(1) {
+        width: 80px;
+        height: 80px;
+        left: 10%;
+        animation-delay: 0s;
+        animation-duration: 25s;
+      }
+
+      .shape:nth-child(2) {
+        width: 120px;
+        height: 120px;
+        left: 20%;
+        animation-delay: -5s;
+        animation-duration: 30s;
+      }
+
+      .shape:nth-child(3) {
+        width: 60px;
+        height: 60px;
+        left: 35%;
+        animation-delay: -10s;
+        animation-duration: 20s;
+      }
+
+      .shape:nth-child(4) {
+        width: 100px;
+        height: 100px;
+        left: 50%;
+        animation-delay: -15s;
+        animation-duration: 35s;
+      }
+
+      .shape:nth-child(5) {
+        width: 90px;
+        height: 90px;
+        left: 65%;
+        animation-delay: -20s;
+        animation-duration: 28s;
+      }
+
+      .shape:nth-child(6) {
+        width: 70px;
+        height: 70px;
+        left: 80%;
+        animation-delay: -25s;
+        animation-duration: 22s;
+      }
+
+      .geometric-bg {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background: radial-gradient(
+            circle at 20% 80%,
+            rgba(120, 119, 198, 0.3) 0%,
+            transparent 50%
+          ),
+          radial-gradient(
+            circle at 80% 20%,
+            rgba(255, 119, 198, 0.3) 0%,
+            transparent 50%
+          ),
+          radial-gradient(
+            circle at 40% 40%,
+            rgba(120, 219, 255, 0.3) 0%,
+            transparent 50%
+          );
+        animation: pulse 8s ease-in-out infinite alternate;
+      }
+
+      .grid-overlay {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background-image: linear-gradient(
+            rgba(255, 255, 255, 0.1) 1px,
+            transparent 1px
+          ),
+          linear-gradient(90deg, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+        background-size: 50px 50px;
+        animation: gridMove 15s linear infinite;
+        transform-style: preserve-3d;
+      }
+
+      .content {
+        position: relative;
+        z-index: 10;
+        text-align: center;
+        color: white;
+        padding: 2rem;
+      }
+
+      .title {
+        font-size: 3rem;
+        font-weight: 300;
+        margin-bottom: 1rem;
+        text-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        animation: titleGlow 4s ease-in-out infinite alternate;
+      }
+
+      .subtitle {
+        font-size: 1.2rem;
+        opacity: 0.8;
+        font-weight: 300;
+        letter-spacing: 2px;
+        animation: fadeInOut 6s ease-in-out infinite;
+      }
+
+      .rotating-cube {
+        position: absolute;
+        top: 20%;
+        right: 15%;
+        width: 100px;
+        height: 100px;
+        transform-style: preserve-3d;
+        animation: rotateCube 20s linear infinite;
+      }
+
+      .cube-face {
+        position: absolute;
+        width: 100px;
+        height: 100px;
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        backdrop-filter: blur(5px);
+      }
+
+      .cube-face:nth-child(1) {
+        transform: rotateY(0deg) translateZ(50px);
+      }
+      .cube-face:nth-child(2) {
+        transform: rotateY(90deg) translateZ(50px);
+      }
+      .cube-face:nth-child(3) {
+        transform: rotateY(180deg) translateZ(50px);
+      }
+      .cube-face:nth-child(4) {
+        transform: rotateY(-90deg) translateZ(50px);
+      }
+      .cube-face:nth-child(5) {
+        transform: rotateX(90deg) translateZ(50px);
+      }
+      .cube-face:nth-child(6) {
+        transform: rotateX(-90deg) translateZ(50px);
+      }
+
+      @keyframes float {
+        0% {
+          transform: translateY(100vh) rotate(0deg);
+          opacity: 0;
+        }
+        10% {
+          opacity: 1;
+        }
+        90% {
+          opacity: 1;
+        }
+        100% {
+          transform: translateY(-100px) rotate(360deg);
+          opacity: 0;
+        }
+      }
+
+      @keyframes pulse {
+        0% {
+          transform: scale(1) rotate(0deg);
+          opacity: 0.7;
+        }
+        100% {
+          transform: scale(1.1) rotate(5deg);
+          opacity: 0.9;
+        }
+      }
+
+      @keyframes gridMove {
+        0% {
+          transform: translate(0, 0) rotateX(0deg);
+        }
+        100% {
+          transform: translate(50px, 50px) rotateX(360deg);
+        }
+      }
+
+      @keyframes titleGlow {
+        0% {
+          text-shadow: 0 4px 8px rgba(0, 0, 0, 0.3),
+            0 0 20px rgba(255, 255, 255, 0.2);
+        }
+        100% {
+          text-shadow: 0 4px 8px rgba(0, 0, 0, 0.3),
+            0 0 30px rgba(255, 255, 255, 0.4);
+        }
+      }
+
+      @keyframes fadeInOut {
+        0%,
+        100% {
+          opacity: 0.6;
+        }
+        50% {
+          opacity: 1;
+        }
+      }
+
+      @keyframes rotateCube {
+        0% {
+          transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg);
+        }
+        100% {
+          transform: rotateX(360deg) rotateY(360deg) rotateZ(360deg);
+        }
+      }
+
+      /* Responsive design */
+      @media (max-width: 768px) {
+        .title {
+          font-size: 2rem;
+        }
+
+        .subtitle {
+          font-size: 1rem;
+        }
+
+        .rotating-cube {
+          width: 60px;
+          height: 60px;
+          top: 10%;
+          right: 10%;
+        }
+
+        .cube-face {
+          width: 60px;
+          height: 60px;
+        }
+
+        .cube-face:nth-child(1) {
+          transform: rotateY(0deg) translateZ(30px);
+        }
+        .cube-face:nth-child(2) {
+          transform: rotateY(90deg) translateZ(30px);
+        }
+        .cube-face:nth-child(3) {
+          transform: rotateY(180deg) translateZ(30px);
+        }
+        .cube-face:nth-child(4) {
+          transform: rotateY(-90deg) translateZ(30px);
+        }
+        .cube-face:nth-child(5) {
+          transform: rotateX(90deg) translateZ(30px);
+        }
+        .cube-face:nth-child(6) {
+          transform: rotateX(-90deg) translateZ(30px);
+        }
+      }
+      .btn {
+        background-color: #ffffff;
+        border: none;
+        color: #333;
+        padding: 12px 24px;
+        font-size: 1rem;
+        border-radius: 8px;
+        cursor: pointer;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        transition: background-color 0.3s ease;
+        text-decoration: none;
+        display: inline-block;
+        margin-bottom: 20px;
+      }
+
+      .btn:hover {
+        background-color: #ffe0ec;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <!-- Animated geometric background -->
+      <div class="geometric-bg"></div>
+
+      <!-- Moving grid overlay -->
+      <div class="grid-overlay"></div>
+
+      <!-- Floating shapes -->
+      <div class="floating-shapes">
+        <div class="shape"></div>
+        <div class="shape"></div>
+        <div class="shape"></div>
+        <div class="shape"></div>
+        <div class="shape"></div>
+        <div class="shape"></div>
+      </div>
+
+      <!-- 3D rotating cube -->
+      <div class="rotating-cube">
+        <div class="cube-face"></div>
+        <div class="cube-face"></div>
+        <div class="cube-face"></div>
+        <div class="cube-face"></div>
+        <div class="cube-face"></div>
+        <div class="cube-face"></div>
+      </div>
+
+      <!-- Content overlay -->
+      <div class="content">
+        <h1 class="title">📝 Reflection Time!</h1>
+        <p>
+          Please read each sentence and tick the emoji that best represents how
+          you feel.
+        </p>
+        <a
+          href="https://forms.gle/jTjm5E2nKVaCUx4G6"
+          class="btn"
+          target="_blank"
+          >👉 Click here to open the reflection form</a
+        >
+        <div class="qr-code">
+          <img
+            src="../img/QR/reflection.png"
+            alt="QR Code to open reflection form"
+          />
+        </div>
+      </div>
+    </div>
+    <script>
+      (function () {
+        function c() {
+          var b = a.contentDocument || a.contentWindow.document;
+          if (b) {
+            var d = b.createElement("script");
+            d.innerHTML =
+              "window.__CF$cv$params={r:'96865d8cf006ce67',t:'MTc1NDA2MjEwNy4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";
+            b.getElementsByTagName("head")[0].appendChild(d);
+          }
+        }
+        if (document.body) {
+          var a = document.createElement("iframe");
+          a.height = 1;
+          a.width = 1;
+          a.style.position = "absolute";
+          a.style.top = 0;
+          a.style.left = 0;
+          a.style.border = "none";
+          a.style.visibility = "hidden";
+          document.body.appendChild(a);
+          if ("loading" !== document.readyState) c();
+          else if (window.addEventListener)
+            document.addEventListener("DOMContentLoaded", c);
+          else {
+            var e = document.onreadystatechange || function () {};
+            document.onreadystatechange = function (b) {
+              e(b);
+              "loading" !== document.readyState &&
+                ((document.onreadystatechange = e), c());
+            };
+          }
+        }
+      })();
+    </script>
+  </body>
+</html>
