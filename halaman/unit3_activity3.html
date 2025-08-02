@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Activity 3 - Record Dialogue</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+        background: linear-gradient(to right, #667eea, #764ba2);
+        color: white;
+        min-height: 100vh;
+      }
+      textarea {
+        resize: none;
+      }
+    </style>
+  </head>
+  <body class="flex flex-col items-center px-4 pb-32 pt-10">
+    <!-- Header -->
+    <h1 class="text-3xl md:text-4xl font-bold mb-4">🎙️ Activity 3</h1>
+    <p class="text-center mb-6 text-white/90 max-w-xl">
+      1. Make a short dialogue (6 lines) about your favorite extracurricular.<br />
+      2. Practice and record your voice with your friend.<br />
+      3. Rename your file: <strong>YourName_Class</strong> (e.g., GestaUtama_7D)
+      and upload it here:
+      <a
+        href="https://drive.google.com/drive/folders/1EbaJkdeL4Xs93mPKMM5c2IGpmHcrFbws?usp=sharing"
+        class="underline text-yellow-300"
+        target="_blank"
+        >Google Drive Link</a
+      >
+    </p>
+
+    <!-- Form Input -->
+    <div class="bg-white/10 p-6 rounded-xl shadow-md max-w-md w-full mb-6">
+      <label class="block mb-2 text-sm font-semibold">Your Name</label>
+      <input
+        id="nameInput"
+        type="text"
+        class="w-full px-4 py-2 rounded-md text-black"
+        placeholder="e.g., GestaUtama"
+      />
+
+      <label class="block mt-4 mb-2 text-sm font-semibold">Your Class</label>
+      <input
+        id="classInput"
+        type="text"
+        class="w-full px-4 py-2 rounded-md text-black"
+        placeholder="e.g., 7D"
+      />
+    </div>
+
+    <!-- Recorder Section -->
+    <div class="flex flex-col items-center space-y-4">
+      <button
+        id="recordBtn"
+        class="bg-green-500 hover:bg-green-600 text-white font-semibold px-6 py-3 rounded-full shadow-lg transition"
+      >
+        🎤 Start Recording
+      </button>
+
+      <audio
+        id="audioPlayback"
+        controls
+        class="hidden mt-4 w-full max-w-md"
+      ></audio>
+
+      <a
+        id="downloadLink"
+        class="hidden mt-4 bg-yellow-400 hover:bg-yellow-500 text-black font-bold px-6 py-2 rounded-lg shadow-lg"
+        download
+      >
+        ⬇️ Download Your Recording
+      </a>
+    </div>
+
+    <!-- Bottom Navigation -->
+    <nav
+      class="fixed bottom-0 left-0 right-0 bg-gradient-to-r from-purple-900/95 to-blue-900/95 backdrop-blur-lg border-t border-white/20 z-50"
+    >
+      <div class="max-w-md mx-auto px-4 py-3">
+        <div class="flex justify-between items-center">
+          <!-- Back Button -->
+          <button
+            id="backBtn"
+            class="flex flex-col items-center space-y-1 px-4 py-2 rounded-xl hover:bg-white/10 active:scale-95 transition"
+          >
+            <div
+              class="w-8 h-8 bg-gradient-to-br from-red-400 to-red-600 rounded-full flex items-center justify-center shadow-lg"
+            >
+              <svg
+                class="w-4 h-4 text-white"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M15 19l-7-7 7-7"
+                ></path>
+              </svg>
+            </div>
+            <span class="text-xs text-white font-medium">Back</span>
+          </button>
+
+          <!-- Home Button -->
+          <button
+            id="homeBtn"
+            class="flex flex-col items-center space-y-1 px-4 py-2 rounded-xl hover:bg-white/10 active:scale-95 transition"
+          >
+            <div
+              class="w-10 h-10 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-full flex items-center justify-center shadow-lg transform hover:scale-110 transition-transform"
+            >
+              <svg
+                class="w-5 h-5 text-white"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
+                />
+              </svg>
+            </div>
+            <span class="text-xs text-white font-medium">Home</span>
+          </button>
+        </div>
+      </div>
+    </nav>
+
+    <script>
+      const recordBtn = document.getElementById("recordBtn");
+      const audioPlayback = document.getElementById("audioPlayback");
+      const downloadLink = document.getElementById("downloadLink");
+
+      let mediaRecorder;
+      let audioChunks = [];
+      let isRecording = false;
+
+      recordBtn.addEventListener("click", async () => {
+        const name = document.getElementById("nameInput").value.trim();
+        const className = document.getElementById("classInput").value.trim();
+
+        if (!name || !className) {
+          alert("Please fill in your name and class first.");
+          return;
+        }
+
+        if (!isRecording) {
+          try {
+            const stream = await navigator.mediaDevices.getUserMedia({
+              audio: true,
+            });
+            mediaRecorder = new MediaRecorder(stream);
+            audioChunks = [];
+
+            mediaRecorder.ondataavailable = (e) => audioChunks.push(e.data);
+
+            mediaRecorder.onstop = () => {
+              const blob = new Blob(audioChunks, { type: "audio/webm" });
+              const url = URL.createObjectURL(blob);
+
+              audioPlayback.src = url;
+              audioPlayback.classList.remove("hidden");
+
+              const fileName = `${name}_${className}.webm`;
+              downloadLink.href = url;
+              downloadLink.download = fileName;
+              downloadLink.classList.remove("hidden");
+            };
+
+            mediaRecorder.start();
+            isRecording = true;
+            recordBtn.textContent = "⏹️ Stop Recording";
+            recordBtn.classList.replace("bg-green-500", "bg-red-500");
+          } catch (error) {
+            alert("Microphone access is required.");
+          }
+        } else {
+          mediaRecorder.stop();
+          isRecording = false;
+          recordBtn.textContent = "🎤 Start Recording";
+          recordBtn.classList.replace("bg-red-500", "bg-green-500");
+        }
+      });
+
+      // Navigation
+      document.getElementById("homeBtn").addEventListener("click", () => {
+        window.location.href = "../menu.html";
+      });
+
+      document.getElementById("backBtn").addEventListener("click", () => {
+        history.back();
+      });
+    </script>
+  </body>
+</html>
